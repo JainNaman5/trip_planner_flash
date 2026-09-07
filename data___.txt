@@ -1,0 +1,657 @@
+```python
+import csv
+import json
+
+data = [
+    # Andhra Pradesh
+    {"State": "Andhra Pradesh", "City": "Visakhapatnam", "Place Name": "RK Beach"},
+    {"State": "Andhra Pradesh", "City": "Visakhapatnam", "Place Name": "Submarine Museum"},
+    {"State": "Andhra Pradesh", "City": "Visakhapatnam", "Place Name": "Kailasagiri"},
+    {"State": "Andhra Pradesh", "City": "Visakhapatnam", "Place Name": "Borra Caves"},
+    {"State": "Andhra Pradesh", "City": "Visakhapatnam", "Place Name": "Rushikonda Beach"},
+    {"State": "Andhra Pradesh", "City": "Vijayawada", "Place Name": "Kanaka Durga Temple"},
+    {"State": "Andhra Pradesh", "City": "Vijayawada", "Place Name": "Undavalli Caves"},
+    {"State": "Andhra Pradesh", "City": "Vijayawada", "Place Name": "Prakasam Barrage"},
+    {"State": "Andhra Pradesh", "City": "Vijayawada", "Place Name": "Bhavani Island"},
+    {"State": "Andhra Pradesh", "City": "Tirupati", "Place Name": "Sri Venkateswara Swamy Temple (Tirumala)"},
+    {"State": "Andhra Pradesh", "City": "Tirupati", "Place Name": "Kapila Theertham"},
+    {"State": "Andhra Pradesh", "City": "Tirupati", "Place Name": "Chandragiri Fort"},
+    {"State": "Andhra Pradesh", "City": "Kurnool", "Place Name": "Belum Caves"},
+    {"State": "Andhra Pradesh", "City": "Kurnool", "Place Name": "Konda Reddy Fort"},
+    {"State": "Andhra Pradesh", "City": "Kurnool", "Place Name": "Oravakallu Rock Garden"},
+
+    # Arunachal Pradesh
+    {"State": "Arunachal Pradesh", "City": "Itanagar", "Place Name": "Ita Fort"},
+    {"State": "Arunachal Pradesh", "City": "Itanagar", "Place Name": "Ganga Lake"},
+    {"State": "Arunachal Pradesh", "City": "Itanagar", "Place Name": "Gompa Buddhist Temple"},
+    {"State": "Arunachal Pradesh", "City": "Itanagar", "Place Name": "Jawaharlal Nehru State Museum"},
+    {"State": "Arunachal Pradesh", "City": "Tawang", "Place Name": "Tawang Monastery"},
+    {"State": "Arunachal Pradesh", "City": "Tawang", "Place Name": "Sela Pass"},
+    {"State": "Arunachal Pradesh", "City": "Tawang", "Place Name": "Madhuri Lake"},
+    {"State": "Arunachal Pradesh", "City": "Tawang", "Place Name": "Nuranang Falls"},
+    {"State": "Arunachal Pradesh", "City": "Ziro", "Place Name": "Talley Valley Wildlife Sanctuary"},
+    {"State": "Arunachal Pradesh", "City": "Ziro", "Place Name": "Meghna Cave Temple"},
+    {"State": "Arunachal Pradesh", "City": "Ziro", "Place Name": "Kardo Shiva Lingam"},
+
+    # Assam
+    {"State": "Assam", "City": "Guwahati", "Place Name": "Kamakhya Temple"},
+    {"State": "Assam", "City": "Guwahati", "Place Name": "Umananda Island"},
+    {"State": "Assam", "City": "Guwahati", "Place Name": "Assam State Museum"},
+    {"State": "Assam", "City": "Guwahati", "Place Name": "Deepor Beel"},
+    {"State": "Assam", "City": "Guwahati", "Place Name": "Brahmaputra Riverfront"},
+    {"State": "Assam", "City": "Tezpur", "Place Name": "Agnigarh"},
+    {"State": "Assam", "City": "Tezpur", "Place Name": "Cole Park (Chitralekha Udyan)"},
+    {"State": "Assam", "City": "Tezpur", "Place Name": "Bamuni Hills"},
+    {"State": "Assam", "City": "Jorhat", "Place Name": "Majuli Island"},
+    {"State": "Assam", "City": "Jorhat", "Place Name": "Hoollongapar Gibbon Sanctuary"},
+    {"State": "Assam", "City": "Jorhat", "Place Name": "Gymkhana Club"},
+
+    # Bihar
+    {"State": "Bihar", "City": "Patna", "Place Name": "Golghar"},
+    {"State": "Bihar", "City": "Patna", "Place Name": "Patna Sahib Gurudwara"},
+    {"State": "Bihar", "City": "Patna", "Place Name": "Bihar Museum"},
+    {"State": "Bihar", "City": "Patna", "Place Name": "Kumhrar Ruins"},
+    {"State": "Bihar", "City": "Patna", "Place Name": "Sanjay Gandhi Biological Park"},
+    {"State": "Bihar", "City": "Gaya & Bodh Gaya", "Place Name": "Mahabodhi Temple"},
+    {"State": "Bihar", "City": "Gaya & Bodh Gaya", "Place Name": "Great Buddha Statue"},
+    {"State": "Bihar", "City": "Gaya & Bodh Gaya", "Place Name": "Vishnupad Temple"},
+    {"State": "Bihar", "City": "Gaya & Bodh Gaya", "Place Name": "Dungeshwari Cave"},
+    {"State": "Bihar", "City": "Nalanda & Rajgir", "Place Name": "Nalanda University Ruins"},
+    {"State": "Bihar", "City": "Nalanda & Rajgir", "Place Name": "Vishwa Shanti Stupa"},
+    {"State": "Bihar", "City": "Nalanda & Rajgir", "Place Name": "Venu Vana"},
+    {"State": "Bihar", "City": "Nalanda & Rajgir", "Place Name": "Griddhakuta Peak"},
+
+    # Chhattisgarh
+    {"State": "Chhattisgarh", "City": "Raipur", "Place Name": "Swami Vivekananda Sarovar"},
+    {"State": "Chhattisgarh", "City": "Raipur", "Place Name": "Nandan Van Zoo"},
+    {"State": "Chhattisgarh", "City": "Raipur", "Place Name": "Marine Drive Raipur"},
+    {"State": "Chhattisgarh", "City": "Raipur", "Place Name": "Mahant Ghasidas Memorial Museum"},
+    {"State": "Chhattisgarh", "City": "Bilaspur", "Place Name": "Kanan Pendari Zoo"},
+    {"State": "Chhattisgarh", "City": "Bilaspur", "Place Name": "Ratanpur Mahamaya Temple"},
+    {"State": "Chhattisgarh", "City": "Bilaspur", "Place Name": "Khutaghat Dam"},
+    {"State": "Chhattisgarh", "City": "Jagdalpur", "Place Name": "Chitrakote Waterfalls"},
+    {"State": "Chhattisgarh", "City": "Jagdalpur", "Place Name": "Tirathgarh Falls"},
+    {"State": "Chhattisgarh", "City": "Jagdalpur", "Place Name": "Kanger Valley National Park"},
+    {"State": "Chhattisgarh", "City": "Jagdalpur", "Place Name": "Anthropological Museum"},
+
+    # Goa
+    {"State": "Goa", "City": "Panaji", "Place Name": "Basilica of Bom Jesus"},
+    {"State": "Goa", "City": "Panaji", "Place Name": "Se Cathedral"},
+    {"State": "Goa", "City": "Panaji", "Place Name": "Miramar Beach"},
+    {"State": "Goa", "City": "Panaji", "Place Name": "Fort Aguada"},
+    {"State": "Goa", "City": "Panaji", "Place Name": "Church of Our Lady of the Immaculate Conception"},
+    {"State": "Goa", "City": "Margao", "Place Name": "Colva Beach"},
+    {"State": "Goa", "City": "Margao", "Place Name": "Benaulim Beach"},
+    {"State": "Goa", "City": "Margao", "Place Name": "Holy Spirit Church"},
+    {"State": "Goa", "City": "Margao", "Place Name": "Monte Hill"},
+
+    # Gujarat
+    {"State": "Gujarat", "City": "Ahmedabad", "Place Name": "Sabarmati Ashram"},
+    {"State": "Gujarat", "City": "Ahmedabad", "Place Name": "Adalaj Stepwell"},
+    {"State": "Gujarat", "City": "Ahmedabad", "Place Name": "Sidi Saiyyed Mosque"},
+    {"State": "Gujarat", "City": "Ahmedabad", "Place Name": "Kankaria Lake"},
+    {"State": "Gujarat", "City": "Ahmedabad", "Place Name": "Science City"},
+    {"State": "Gujarat", "City": "Surat", "Place Name": "Dumas Beach"},
+    {"State": "Gujarat", "City": "Surat", "Place Name": "Surat Castle"},
+    {"State": "Gujarat", "City": "Surat", "Place Name": "Dutch Garden"},
+    {"State": "Gujarat", "City": "Surat", "Place Name": "Gopi Talav"},
+    {"State": "Gujarat", "City": "Vadodara", "Place Name": "Laxmi Vilas Palace"},
+    {"State": "Gujarat", "City": "Vadodara", "Place Name": "Sayaji Baug"},
+    {"State": "Gujarat", "City": "Vadodara", "Place Name": "Baroda Museum"},
+    {"State": "Gujarat", "City": "Vadodara", "Place Name": "Champaner-Pavagadh"},
+    {"State": "Gujarat", "City": "Rajkot", "Place Name": "Watson Museum"},
+    {"State": "Gujarat", "City": "Rajkot", "Place Name": "Kaba Gandhi No Delo"},
+    {"State": "Gujarat", "City": "Rajkot", "Place Name": "Pradhyuman Zoological Park"},
+
+    # Haryana
+    {"State": "Haryana", "City": "Gurugram", "Place Name": "Kingdom of Dreams"},
+    {"State": "Haryana", "City": "Gurugram", "Place Name": "Cyber Hub"},
+    {"State": "Haryana", "City": "Gurugram", "Place Name": "Sultanpur National Park"},
+    {"State": "Haryana", "City": "Gurugram", "Place Name": "Vintage Camera Museum"},
+    {"State": "Haryana", "City": "Faridabad", "Place Name": "Badkhal Lake"},
+    {"State": "Haryana", "City": "Faridabad", "Place Name": "Surajkund Lake"},
+    {"State": "Haryana", "City": "Faridabad", "Place Name": "Raja Nahar Singh Palace"},
+    {"State": "Haryana", "City": "Kurukshetra", "Place Name": "Brahma Sarovar"},
+    {"State": "Haryana", "City": "Kurukshetra", "Place Name": "Jyotisar"},
+    {"State": "Haryana", "City": "Kurukshetra", "Place Name": "Panorama and Science Centre"},
+    {"State": "Haryana", "City": "Kurukshetra", "Place Name": "Sannihit Sarovar"},
+    {"State": "Haryana", "City": "Panchkula", "Place Name": "Pinjore Gardens"},
+    {"State": "Haryana", "City": "Panchkula", "Place Name": "Cactus Garden"},
+    {"State": "Haryana", "City": "Panchkula", "Place Name": "Morni Hills"},
+    {"State": "Haryana", "City": "Panchkula", "Place Name": "Nada Sahib Gurudwara"},
+
+    # Himachal Pradesh
+    {"State": "Himachal Pradesh", "City": "Shimla", "Place Name": "The Ridge"},
+    {"State": "Himachal Pradesh", "City": "Shimla", "Place Name": "Mall Road"},
+    {"State": "Himachal Pradesh", "City": "Shimla", "Place Name": "Jakhoo Temple"},
+    {"State": "Himachal Pradesh", "City": "Shimla", "Place Name": "Kalka-Shimla Toy Train"},
+    {"State": "Himachal Pradesh", "City": "Shimla", "Place Name": "Christ Church"},
+    {"State": "Himachal Pradesh", "City": "Manali", "Place Name": "Solang Valley"},
+    {"State": "Himachal Pradesh", "City": "Manali", "Place Name": "Rohtang Pass"},
+    {"State": "Himachal Pradesh", "City": "Manali", "Place Name": "Hadimba Temple"},
+    {"State": "Himachal Pradesh", "City": "Manali", "Place Name": "Old Manali"},
+    {"State": "Himachal Pradesh", "City": "Manali", "Place Name": "Jogini Falls"},
+    {"State": "Himachal Pradesh", "City": "Dharamshala & McLeod Ganj", "Place Name": "Tsuglagkhang Complex"},
+    {"State": "Himachal Pradesh", "City": "Dharamshala & McLeod Ganj", "Place Name": "Bhagsunag Waterfall"},
+    {"State": "Himachal Pradesh", "City": "Dharamshala & McLeod Ganj", "Place Name": "Namgyal Monastery"},
+    {"State": "Himachal Pradesh", "City": "Dharamshala & McLeod Ganj", "Place Name": "HPCA Stadium"},
+
+    # Jharkhand
+    {"State": "Jharkhand", "City": "Ranchi", "Place Name": "Hundru Falls"},
+    {"State": "Jharkhand", "City": "Ranchi", "Place Name": "Jonha Falls"},
+    {"State": "Jharkhand", "City": "Ranchi", "Place Name": "Dassam Falls"},
+    {"State": "Jharkhand", "City": "Ranchi", "Place Name": "Pahari Mandir"},
+    {"State": "Jharkhand", "City": "Ranchi", "Place Name": "Tagore Hill"},
+    {"State": "Jharkhand", "City": "Jamshedpur", "Place Name": "Jubilee Park"},
+    {"State": "Jharkhand", "City": "Jamshedpur", "Place Name": "Dimna Lake"},
+    {"State": "Jharkhand", "City": "Jamshedpur", "Place Name": "Dalma Wildlife Sanctuary"},
+    {"State": "Jharkhand", "City": "Jamshedpur", "Place Name": "Tata Steel Zoological Park"},
+    {"State": "Jharkhand", "City": "Dhanbad", "Place Name": "Maithon Dam"},
+    {"State": "Jharkhand", "City": "Dhanbad", "Place Name": "Panchet Dam"},
+    {"State": "Jharkhand", "City": "Dhanbad", "Place Name": "Topchanchi Lake"},
+    {"State": "Jharkhand", "City": "Dhanbad", "Place Name": "Shakti Mandir"},
+
+    # Karnataka
+    {"State": "Karnataka", "City": "Bengaluru", "Place Name": "Lalbagh Botanical Garden"},
+    {"State": "Karnataka", "City": "Bengaluru", "Place Name": "Cubbon Park"},
+    {"State": "Karnataka", "City": "Bengaluru", "Place Name": "Bangalore Palace"},
+    {"State": "Karnataka", "City": "Bengaluru", "Place Name": "Bannerghatta National Park"},
+    {"State": "Karnataka", "City": "Bengaluru", "Place Name": "Tipu Sultan's Summer Palace"},
+    {"State": "Karnataka", "City": "Mysuru", "Place Name": "Mysore Palace"},
+    {"State": "Karnataka", "City": "Mysuru", "Place Name": "Chamundi Hill"},
+    {"State": "Karnataka", "City": "Mysuru", "Place Name": "Brindavan Gardens"},
+    {"State": "Karnataka", "City": "Mysuru", "Place Name": "Mysore Zoo"},
+    {"State": "Karnataka", "City": "Mysuru", "Place Name": "St. Philomena's Cathedral"},
+    {"State": "Karnataka", "City": "Hampi", "Place Name": "Virupaksha Temple"},
+    {"State": "Karnataka", "City": "Hampi", "Place Name": "Vijaya Vittala Temple"},
+    {"State": "Karnataka", "City": "Hampi", "Place Name": "Lotus Mahal"},
+    {"State": "Karnataka", "City": "Hampi", "Place Name": "Elephant Stables"},
+    {"State": "Karnataka", "City": "Hampi", "Place Name": "Matanga Hill"},
+    {"State": "Karnataka", "City": "Mangaluru", "Place Name": "Panambur Beach"},
+    {"State": "Karnataka", "City": "Mangaluru", "Place Name": "Kadri Manjunath Temple"},
+    {"State": "Karnataka", "City": "Mangaluru", "Place Name": "St. Aloysius Chapel"},
+    {"State": "Karnataka", "City": "Mangaluru", "Place Name": "Tannirbhavi Beach"},
+
+    # Kerala
+    {"State": "Kerala", "City": "Thiruvananthapuram", "Place Name": "Padmanabhaswamy Temple"},
+    {"State": "Kerala", "City": "Thiruvananthapuram", "Place Name": "Kovalam Beach"},
+    {"State": "Kerala", "City": "Thiruvananthapuram", "Place Name": "Napier Museum"},
+    {"State": "Kerala", "City": "Thiruvananthapuram", "Place Name": "Shangumugham Beach"},
+    {"State": "Kerala", "City": "Kochi", "Place Name": "Fort Kochi"},
+    {"State": "Kerala", "City": "Kochi", "Place Name": "Chinese Fishing Nets"},
+    {"State": "Kerala", "City": "Kochi", "Place Name": "Mattancherry Palace"},
+    {"State": "Kerala", "City": "Kochi", "Place Name": "Marine Drive"},
+    {"State": "Kerala", "City": "Kochi", "Place Name": "Santa Cruz Basilica"},
+    {"State": "Kerala", "City": "Munnar", "Place Name": "Tea Museum"},
+    {"State": "Kerala", "City": "Munnar", "Place Name": "Eravikulam National Park"},
+    {"State": "Kerala", "City": "Munnar", "Place Name": "Mattupetty Dam"},
+    {"State": "Kerala", "City": "Munnar", "Place Name": "Anamudi Peak"},
+    {"State": "Kerala", "City": "Munnar", "Place Name": "Top Station"},
+    {"State": "Kerala", "City": "Alappuzha", "Place Name": "Alappuzha Beach"},
+    {"State": "Kerala", "City": "Alappuzha", "Place Name": "Vembanad Lake"},
+    {"State": "Kerala", "City": "Alappuzha", "Place Name": "Marari Beach"},
+    {"State": "Kerala", "City": "Alappuzha", "Place Name": "Pathiramanal Island"},
+
+    # Madhya Pradesh
+    {"State": "Madhya Pradesh", "City": "Indore", "Place Name": "Rajwada Palace"},
+    {"State": "Madhya Pradesh", "City": "Indore", "Place Name": "Lal Bagh Palace"},
+    {"State": "Madhya Pradesh", "City": "Indore", "Place Name": "Sarafa Bazaar"},
+    {"State": "Madhya Pradesh", "City": "Indore", "Place Name": "Chappan Dukan"},
+    {"State": "Madhya Pradesh", "City": "Indore", "Place Name": "Central Museum"},
+    {"State": "Madhya Pradesh", "City": "Bhopal", "Place Name": "Upper Lake (Bhojtal)"},
+    {"State": "Madhya Pradesh", "City": "Bhopal", "Place Name": "Van Vihar National Park"},
+    {"State": "Madhya Pradesh", "City": "Bhopal", "Place Name": "Bharat Bhavan"},
+    {"State": "Madhya Pradesh", "City": "Bhopal", "Place Name": "Taj-ul-Masajid"},
+    {"State": "Madhya Pradesh", "City": "Bhopal", "Place Name": "Shaukat Mahal"},
+    {"State": "Madhya Pradesh", "City": "Ujjain", "Place Name": "Mahakaleshwar Jyotirlinga"},
+    {"State": "Madhya Pradesh", "City": "Ujjain", "Place Name": "Ram Ghat"},
+    {"State": "Madhya Pradesh", "City": "Ujjain", "Place Name": "Kal Bhairav Temple"},
+    {"State": "Madhya Pradesh", "City": "Ujjain", "Place Name": "Harsiddhi Temple"},
+    {"State": "Madhya Pradesh", "City": "Ujjain", "Place Name": "Vedh Shala"},
+    {"State": "Madhya Pradesh", "City": "Gwalior", "Place Name": "Gwalior Fort"},
+    {"State": "Madhya Pradesh", "City": "Gwalior", "Place Name": "Jai Vilas Palace"},
+    {"State": "Madhya Pradesh", "City": "Gwalior", "Place Name": "Sun Temple"},
+    {"State": "Madhya Pradesh", "City": "Gwalior", "Place Name": "Tomb of Tansen"},
+    {"State": "Madhya Pradesh", "City": "Gwalior", "Place Name": "Sas Bahu Temples"},
+    {"State": "Madhya Pradesh", "City": "Jabalpur", "Place Name": "Bhedaghat (Marble Rocks)"},
+    {"State": "Madhya Pradesh", "City": "Jabalpur", "Place Name": "Dhuandhar Falls"},
+    {"State": "Madhya Pradesh", "City": "Jabalpur", "Place Name": "Chausath Yogini Temple"},
+    {"State": "Madhya Pradesh", "City": "Jabalpur", "Place Name": "Madan Mahal Fort"},
+
+    # Maharashtra
+    {"State": "Maharashtra", "City": "Mumbai", "Place Name": "Gateway of India"},
+    {"State": "Maharashtra", "City": "Mumbai", "Place Name": "Marine Drive"},
+    {"State": "Maharashtra", "City": "Mumbai", "Place Name": "Elephanta Caves"},
+    {"State": "Maharashtra", "City": "Mumbai", "Place Name": "Chhatrapati Shivaji Maharaj Terminus"},
+    {"State": "Maharashtra", "City": "Mumbai", "Place Name": "Siddhivinayak Temple"},
+    {"State": "Maharashtra", "City": "Pune", "Place Name": "Shaniwar Wada"},
+    {"State": "Maharashtra", "City": "Pune", "Place Name": "Aga Khan Palace"},
+    {"State": "Maharashtra", "City": "Pune", "Place Name": "Sinhagad Fort"},
+    {"State": "Maharashtra", "City": "Pune", "Place Name": "Dagdusheth Halwai Ganapati Temple"},
+    {"State": "Maharashtra", "City": "Pune", "Place Name": "Osho Garden"},
+    {"State": "Maharashtra", "City": "Nagpur", "Place Name": "Deekshabhoomi"},
+    {"State": "Maharashtra", "City": "Nagpur", "Place Name": "Futala Lake"},
+    {"State": "Maharashtra", "City": "Nagpur", "Place Name": "Ambazari Lake"},
+    {"State": "Maharashtra", "City": "Nagpur", "Place Name": "Sitabuldi Fort"},
+    {"State": "Maharashtra", "City": "Nashik", "Place Name": "Trimbakeshwar Shiva Temple"},
+    {"State": "Maharashtra", "City": "Nashik", "Place Name": "Pandavleni Caves"},
+    {"State": "Maharashtra", "City": "Nashik", "Place Name": "Panchavati"},
+    {"State": "Maharashtra", "City": "Nashik", "Place Name": "Sula Vineyards"},
+    {"State": "Maharashtra", "City": "Chhatrapati Sambhajinagar", "Place Name": "Ajanta Caves"},
+    {"State": "Maharashtra", "City": "Chhatrapati Sambhajinagar", "Place Name": "Ellora Caves"},
+    {"State": "Maharashtra", "City": "Chhatrapati Sambhajinagar", "Place Name": "Bibi Ka Maqbara"},
+    {"State": "Maharashtra", "City": "Chhatrapati Sambhajinagar", "Place Name": "Daulatabad Fort"},
+
+    # Manipur
+    {"State": "Manipur", "City": "Imphal", "Place Name": "Loktak Lake"},
+    {"State": "Manipur", "City": "Imphal", "Place Name": "Kangla Fort"},
+    {"State": "Manipur", "City": "Imphal", "Place Name": "INA War Museum"},
+    {"State": "Manipur", "City": "Imphal", "Place Name": "Keibul Lamjao National Park"},
+    {"State": "Manipur", "City": "Imphal", "Place Name": "Ima Keithel (Mother's Market)"},
+
+    # Meghalaya
+    {"State": "Meghalaya", "City": "Shillong", "Place Name": "Umiam Lake"},
+    {"State": "Meghalaya", "City": "Shillong", "Place Name": "Elephant Falls"},
+    {"State": "Meghalaya", "City": "Shillong", "Place Name": "Shillong Peak"},
+    {"State": "Meghalaya", "City": "Shillong", "Place Name": "Ward's Lake"},
+    {"State": "Meghalaya", "City": "Shillong", "Place Name": "Don Bosco Museum"},
+    {"State": "Meghalaya", "City": "Cherrapunji (Sohra)", "Place Name": "Nohkalikai Falls"},
+    {"State": "Meghalaya", "City": "Cherrapunji (Sohra)", "Place Name": "Double Decker Living Root Bridge"},
+    {"State": "Meghalaya", "City": "Cherrapunji (Sohra)", "Place Name": "Mawsmai Cave"},
+    {"State": "Meghalaya", "City": "Cherrapunji (Sohra)", "Place Name": "Seven Sisters Falls"},
+
+    # Mizoram
+    {"State": "Mizoram", "City": "Aizawl", "Place Name": "Solomon's Temple"},
+    {"State": "Mizoram", "City": "Aizawl", "Place Name": "Durtlang Hills"},
+    {"State": "Mizoram", "City": "Aizawl", "Place Name": "Mizoram State Museum"},
+    {"State": "Mizoram", "City": "Aizawl", "Place Name": "Reiek Heritage Village"},
+    {"State": "Mizoram", "City": "Aizawl", "Place Name": "KV Paradise"},
+
+    # Nagaland
+    {"State": "Nagaland", "City": "Kohima", "Place Name": "Kohima War Cemetery"},
+    {"State": "Nagaland", "City": "Kohima", "Place Name": "Kisama Heritage Village"},
+    {"State": "Nagaland", "City": "Kohima", "Place Name": "Dzukou Valley"},
+    {"State": "Nagaland", "City": "Kohima", "Place Name": "Nagaland State Museum"},
+    {"State": "Nagaland", "City": "Dimapur", "Place Name": "Kachari Ruins"},
+    {"State": "Nagaland", "City": "Dimapur", "Place Name": "Triple Falls"},
+    {"State": "Nagaland", "City": "Dimapur", "Place Name": "Diezephe Craft Village"},
+
+    # Odisha
+    {"State": "Odisha", "City": "Bhubaneswar", "Place Name": "Lingaraj Temple"},
+    {"State": "Odisha", "City": "Bhubaneswar", "Place Name": "Udayagiri and Khandagiri Caves"},
+    {"State": "Odisha", "City": "Bhubaneswar", "Place Name": "Nandankanan Zoological Park"},
+    {"State": "Odisha", "City": "Bhubaneswar", "Place Name": "Mukteshwar Temple"},
+    {"State": "Odisha", "City": "Puri", "Place Name": "Jagannath Temple"},
+    {"State": "Odisha", "City": "Puri", "Place Name": "Puri Beach"},
+    {"State": "Odisha", "City": "Puri", "Place Name": "Chilika Lake (Satapada)"},
+    {"State": "Odisha", "City": "Puri", "Place Name": "Gundicha Temple"},
+    {"State": "Odisha", "City": "Konark", "Place Name": "Konark Sun Temple"},
+    {"State": "Odisha", "City": "Konark", "Place Name": "Chandrabhaga Beach"},
+    {"State": "Odisha", "City": "Konark", "Place Name": "Ramachandi Temple"},
+
+    # Punjab
+    {"State": "Punjab", "City": "Amritsar", "Place Name": "Golden Temple (Harmandir Sahib)"},
+    {"State": "Punjab", "City": "Amritsar", "Place Name": "Jallianwala Bagh"},
+    {"State": "Punjab", "City": "Amritsar", "Place Name": "Wagah Border"},
+    {"State": "Punjab", "City": "Amritsar", "Place Name": "Gobindgarh Fort"},
+    {"State": "Punjab", "City": "Ludhiana", "Place Name": "Lodhi Fort"},
+    {"State": "Punjab", "City": "Ludhiana", "Place Name": "Nehru Rose Garden"},
+    {"State": "Punjab", "City": "Ludhiana", "Place Name": "Punjab Agricultural University Museum"},
+    {"State": "Punjab", "City": "Patiala", "Place Name": "Qila Mubarak"},
+    {"State": "Punjab", "City": "Patiala", "Place Name": "Sheesh Mahal"},
+    {"State": "Punjab", "City": "Patiala", "Place Name": "Baradari Garden"},
+    {"State": "Punjab", "City": "Patiala", "Place Name": "Gurdwara Dukh Niwaran Sahib"},
+
+    # Rajasthan
+    {"State": "Rajasthan", "City": "Jaipur", "Place Name": "Amber Fort"},
+    {"State": "Rajasthan", "City": "Jaipur", "Place Name": "Hawa Mahal"},
+    {"State": "Rajasthan", "City": "Jaipur", "Place Name": "City Palace"},
+    {"State": "Rajasthan", "City": "Jaipur", "Place Name": "Jantar Mantar"},
+    {"State": "Rajasthan", "City": "Jaipur", "Place Name": "Nahargarh Fort"},
+    {"State": "Rajasthan", "City": "Udaipur", "Place Name": "City Palace"},
+    {"State": "Rajasthan", "City": "Udaipur", "Place Name": "Lake Pichola"},
+    {"State": "Rajasthan", "City": "Udaipur", "Place Name": "Jag Mandir"},
+    {"State": "Rajasthan", "City": "Udaipur", "Place Name": "Saheliyon-ki-Bari"},
+    {"State": "Rajasthan", "City": "Udaipur", "Place Name": "Fateh Sagar Lake"},
+    {"State": "Rajasthan", "City": "Jodhpur", "Place Name": "Mehrangarh Fort"},
+    {"State": "Rajasthan", "City": "Jodhpur", "Place Name": "Umaid Bhawan Palace"},
+    {"State": "Rajasthan", "City": "Jodhpur", "Place Name": "Jaswant Thada"},
+    {"State": "Rajasthan", "City": "Jodhpur", "Place Name": "Mandore Gardens"},
+    {"State": "Rajasthan", "City": "Jaisalmer", "Place Name": "Jaisalmer Fort (Sonar Qila)"},
+    {"State": "Rajasthan", "City": "Jaisalmer", "Place Name": "Sam Sand Dunes"},
+    {"State": "Rajasthan", "City": "Jaisalmer", "Place Name": "Patwon Ki Haveli"},
+    {"State": "Rajasthan", "City": "Jaisalmer", "Place Name": "Gadisar Lake"},
+
+    # Sikkim
+    {"State": "Sikkim", "City": "Gangtok", "Place Name": "Tsomgo Lake"},
+    {"State": "Sikkim", "City": "Gangtok", "Place Name": "Rumtek Monastery"},
+    {"State": "Sikkim", "City": "Gangtok", "Place Name": "Nathula Pass"},
+    {"State": "Sikkim", "City": "Gangtok", "Place Name": "Ban Jhakri Falls"},
+    {"State": "Sikkim", "City": "Gangtok", "Place Name": "MG Marg"},
+    {"State": "Sikkim", "City": "Pelling", "Place Name": "Pemayangtse Monastery"},
+    {"State": "Sikkim", "City": "Pelling", "Place Name": "Rabdentse Ruins"},
+    {"State": "Sikkim", "City": "Pelling", "Place Name": "Skywalk Pelling"},
+    {"State": "Sikkim", "City": "Pelling", "Place Name": "Kanchenjunga Falls"},
+
+    # Tamil Nadu
+    {"State": "Tamil Nadu", "City": "Chennai", "Place Name": "Marina Beach"},
+    {"State": "Tamil Nadu", "City": "Chennai", "Place Name": "Kapaleeshwarar Temple"},
+    {"State": "Tamil Nadu", "City": "Chennai", "Place Name": "Fort St. George"},
+    {"State": "Tamil Nadu", "City": "Chennai", "Place Name": "San Thome Basilica"},
+    {"State": "Tamil Nadu", "City": "Chennai", "Place Name": "Guindy National Park"},
+    {"State": "Tamil Nadu", "City": "Madurai", "Place Name": "Meenakshi Amman Temple"},
+    {"State": "Tamil Nadu", "City": "Madurai", "Place Name": "Thirumalai Nayakkar Mahal"},
+    {"State": "Tamil Nadu", "City": "Madurai", "Place Name": "Gandhi Memorial Museum"},
+    {"State": "Tamil Nadu", "City": "Madurai", "Place Name": "Alagar Koyil"},
+    {"State": "Tamil Nadu", "City": "Coimbatore", "Place Name": "Adiyogi Shiva Statue"},
+    {"State": "Tamil Nadu", "City": "Coimbatore", "Place Name": "Marudhamalai Murugan Temple"},
+    {"State": "Tamil Nadu", "City": "Coimbatore", "Place Name": "VOC Park"},
+    {"State": "Tamil Nadu", "City": "Coimbatore", "Place Name": "Siruvani Waterfalls"},
+    {"State": "Tamil Nadu", "City": "Tiruchirappalli", "Place Name": "Rockfort Temple"},
+    {"State": "Tamil Nadu", "City": "Tiruchirappalli", "Place Name": "Sri Ranganathaswamy Temple (Srirangam)"},
+    {"State": "Tamil Nadu", "City": "Tiruchirappalli", "Place Name": "Jambukeswarar Temple"},
+
+    # Telangana
+    {"State": "Telangana", "City": "Hyderabad", "Place Name": "Charminar"},
+    {"State": "Telangana", "City": "Hyderabad", "Place Name": "Golconda Fort"},
+    {"State": "Telangana", "City": "Hyderabad", "Place Name": "Ramoji Film City"},
+    {"State": "Telangana", "City": "Hyderabad", "Place Name": "Salar Jung Museum"},
+    {"State": "Telangana", "City": "Hyderabad", "Place Name": "Hussain Sagar Lake"},
+    {"State": "Telangana", "City": "Warangal", "Place Name": "Warangal Fort"},
+    {"State": "Telangana", "City": "Warangal", "Place Name": "Thousand Pillar Temple"},
+    {"State": "Telangana", "City": "Warangal", "Place Name": "Bhadrakali Temple"},
+    {"State": "Telangana", "City": "Warangal", "Place Name": "Ramappa Temple"},
+
+    # Tripura
+    {"State": "Tripura", "City": "Agartala", "Place Name": "Ujjayanta Palace"},
+    {"State": "Tripura", "City": "Agartala", "Place Name": "Neermahal Water Palace"},
+    {"State": "Tripura", "City": "Agartala", "Place Name": "Tripura Sundari Temple"},
+    {"State": "Tripura", "City": "Agartala", "Place Name": "Heritage Park"},
+
+    # Uttar Pradesh
+    {"State": "Uttar Pradesh", "City": "Agra", "Place Name": "Taj Mahal"},
+    {"State": "Uttar Pradesh", "City": "Agra", "Place Name": "Agra Fort"},
+    {"State": "Uttar Pradesh", "City": "Agra", "Place Name": "Fatehpur Sikri"},
+    {"State": "Uttar Pradesh", "City": "Agra", "Place Name": "Mehtab Bagh"},
+    {"State": "Uttar Pradesh", "City": "Agra", "Place Name": "Akbar's Tomb (Sikandra)"},
+    {"State": "Uttar Pradesh", "City": "Varanasi", "Place Name": "Kashi Vishwanath Temple"},
+    {"State": "Uttar Pradesh", "City": "Varanasi", "Place Name": "Dashashwamedh Ghat"},
+    {"State": "Uttar Pradesh", "City": "Varanasi", "Place Name": "Assi Ghat"},
+    {"State": "Uttar Pradesh", "City": "Varanasi", "Place Name": "Sarnath"},
+    {"State": "Uttar Pradesh", "City": "Varanasi", "Place Name": "Manikarnika Ghat"},
+    {"State": "Uttar Pradesh", "City": "Lucknow", "Place Name": "Bara Imambara"},
+    {"State": "Uttar Pradesh", "City": "Lucknow", "Place Name": "Chota Imambara"},
+    {"State": "Uttar Pradesh", "City": "Lucknow", "Place Name": "Rumi Darwaza"},
+    {"State": "Uttar Pradesh", "City": "Lucknow", "Place Name": "Ambedkar Memorial Park"},
+    {"State": "Uttar Pradesh", "City": "Lucknow", "Place Name": "The Residency"},
+    {"State": "Uttar Pradesh", "City": "Mathura & Vrindavan", "Place Name": "Krishna Janmasthan Temple"},
+    {"State": "Uttar Pradesh", "City": "Mathura & Vrindavan", "Place Name": "Banke Bihari Temple"},
+    {"State": "Uttar Pradesh", "City": "Mathura & Vrindavan", "Place Name": "Prem Mandir"},
+    {"State": "Uttar Pradesh", "City": "Mathura & Vrindavan", "Place Name": "ISKCON Vrindavan"},
+    {"State": "Uttar Pradesh", "City": "Prayagraj", "Place Name": "Triveni Sangam"},
+    {"State": "Uttar Pradesh", "City": "Prayagraj", "Place Name": "Allahabad Fort"},
+    {"State": "Uttar Pradesh", "City": "Prayagraj", "Place Name": "Anand Bhavan"},
+    {"State": "Uttar Pradesh", "City": "Prayagraj", "Place Name": "Khusro Bagh"},
+
+    # Uttarakhand
+    {"State": "Uttarakhand", "City": "Dehradun", "Place Name": "Robber's Cave (Guchhupani)"},
+    {"State": "Uttarakhand", "City": "Dehradun", "Place Name": "Sahastradhara"},
+    {"State": "Uttarakhand", "City": "Dehradun", "Place Name": "Tapkeshwar Temple"},
+    {"State": "Uttarakhand", "City": "Dehradun", "Place Name": "Forest Research Institute"},
+    {"State": "Uttarakhand", "City": "Rishikesh", "Place Name": "Laxman Jhula"},
+    {"State": "Uttarakhand", "City": "Rishikesh", "Place Name": "Ram Jhula"},
+    {"State": "Uttarakhand", "City": "Rishikesh", "Place Name": "Triveni Ghat"},
+    {"State": "Uttarakhand", "City": "Rishikesh", "Place Name": "Parmarth Niketan"},
+    {"State": "Uttarakhand", "City": "Rishikesh", "Place Name": "Beatles Ashram"},
+    {"State": "Uttarakhand", "City": "Haridwar", "Place Name": "Har Ki Pauri"},
+    {"State": "Uttarakhand", "City": "Haridwar", "Place Name": "Mansa Devi Temple"},
+    {"State": "Uttarakhand", "City": "Haridwar", "Place Name": "Chandi Devi Temple"},
+    {"State": "Uttarakhand", "City": "Haridwar", "Place Name": "Maya Devi Temple"},
+    {"State": "Uttarakhand", "City": "Nainital", "Place Name": "Naini Lake"},
+    {"State": "Uttarakhand", "City": "Nainital", "Place Name": "Naina Devi Temple"},
+    {"State": "Uttarakhand", "City": "Nainital", "Place Name": "Snow View Point"},
+    {"State": "Uttarakhand", "City": "Nainital", "Place Name": "Tiffin Top"},
+
+    # West Bengal
+    {"State": "West Bengal", "City": "Kolkata", "Place Name": "Victoria Memorial"},
+    {"State": "West Bengal", "City": "Kolkata", "Place Name": "Howrah Bridge"},
+    {"State": "West Bengal", "City": "Kolkata", "Place Name": "Dakshineswar Kali Temple"},
+    {"State": "West Bengal", "City": "Kolkata", "Place Name": "Indian Museum"},
+    {"State": "West Bengal", "City": "Kolkata", "Place Name": "Park Street"},
+    {"State": "West Bengal", "City": "Darjeeling", "Place Name": "Tiger Hill"},
+    {"State": "West Bengal", "City": "Darjeeling", "Place Name": "Batasia Loop"},
+    {"State": "West Bengal", "City": "Darjeeling", "Place Name": "Darjeeling Himalayan Railway (Toy Train)"},
+    {"State": "West Bengal", "City": "Darjeeling", "Place Name": "Peace Pagoda"},
+    {"State": "West Bengal", "City": "Darjeeling", "Place Name": "Rock Garden"},
+    {"State": "West Bengal", "City": "Siliguri", "Place Name": "Bengal Safari"},
+    {"State": "West Bengal", "City": "Siliguri", "Place Name": "Salugara Monastery"},
+    {"State": "West Bengal", "City": "Siliguri", "Place Name": "Mahananda Wildlife Sanctuary"},
+
+    # Union Territories
+    {"State": "Delhi (UT)", "City": "Delhi", "Place Name": "Red Fort"},
+    {"State": "Delhi (UT)", "City": "Delhi", "Place Name": "Qutub Minar"},
+    {"State": "Delhi (UT)", "City": "Delhi", "Place Name": "India Gate"},
+    {"State": "Delhi (UT)", "City": "Delhi", "Place Name": "Lotus Temple"},
+    {"State": "Delhi (UT)", "City": "Delhi", "Place Name": "Humayun's Tomb"},
+    {"State": "Delhi (UT)", "City": "Delhi", "Place Name": "Akshardham Temple"},
+    {"State": "Chandigarh (UT)", "City": "Chandigarh", "Place Name": "Rock Garden"},
+    {"State": "Chandigarh (UT)", "City": "Chandigarh", "Place Name": "Sukhna Lake"},
+    {"State": "Chandigarh (UT)", "City": "Chandigarh", "Place Name": "Rose Garden"},
+    {"State": "Chandigarh (UT)", "City": "Chandigarh", "Place Name": "Sector 17 Plaza"},
+    {"State": "Puducherry (UT)", "City": "Puducherry", "Place Name": "Promenade Beach"},
+    {"State": "Puducherry (UT)", "City": "Puducherry", "Place Name": "Auroville"},
+    {"State": "Puducherry (UT)", "City": "Puducherry", "Place Name": "Sri Aurobindo Ashram"},
+    {"State": "Puducherry (UT)", "City": "Puducherry", "Place Name": "Paradise Beach"},
+    {"State": "Puducherry (UT)", "City": "Puducherry", "Place Name": "French Quarter"},
+    {"State": "Jammu & Kashmir (UT)", "City": "Srinagar", "Place Name": "Dal Lake"},
+    {"State": "Jammu & Kashmir (UT)", "City": "Srinagar", "Place Name": "Shalimar Bagh"},
+    {"State": "Jammu & Kashmir (UT)", "City": "Srinagar", "Place Name": "Nishat Bagh"},
+    {"State": "Jammu & Kashmir (UT)", "City": "Srinagar", "Place Name": "Shankaracharya Temple"},
+    {"State": "Jammu & Kashmir (UT)", "City": "Srinagar", "Place Name": "Hazratbal Shrine"},
+    {"State": "Ladakh (UT)", "City": "Leh", "Place Name": "Pangong Tso"},
+    {"State": "Ladakh (UT)", "City": "Leh", "Place Name": "Khardung La"},
+    {"State": "Ladakh (UT)", "City": "Leh", "Place Name": "Leh Palace"},
+    {"State": "Ladakh (UT)", "City": "Leh", "Place Name": "Shanti Stupa"},
+    {"State": "Ladakh (UT)", "City": "Leh", "Place Name": "Thiksey Monastery"},
+    {"State": "Andaman & Nicobar Islands (UT)", "City": "Port Blair", "Place Name": "Cellular Jail"},
+    {"State": "Andaman & Nicobar Islands (UT)", "City": "Port Blair", "Place Name": "Ross Island (Netaji Subhash Chandra Bose Island)"},
+    {"State": "Andaman & Nicobar Islands (UT)", "City": "Port Blair", "Place Name": "Radhanagar Beach (Havelock)"},
+    {"State": "Andaman & Nicobar Islands (UT)", "City": "Port Blair", "Place Name": "Corbyn's Cove Beach"}
+]
+
+csv_file = "India_Tourist_Places_By_City.csv"
+with open(csv_file, mode="w", newline="", encoding="utf-8-sig") as f:
+    writer = csv.DictWriter(f, fieldnames=["State", "City", "Place Name"])
+    writer.writeheader()
+    writer.writerows(data)
+
+print(f"Generated CSV with {len(data)} rows: {csv_file}")
+
+
+```
+
+```text
+Generated CSV with 397 rows: India_Tourist_Places_By_City.csv
+
+
+```
+
+Your CSV file is ready
+
+---
+
+### Python Dataset Structure (Ready for Direct Copy-Paste)
+
+```python
+INDIA_CITY_TOURIST_PLACES = {
+    # -------------------------------------------------------------
+    # STATES
+    # -------------------------------------------------------------
+    "Andhra Pradesh": {
+        "Visakhapatnam": ["RK Beach", "Submarine Museum", "Kailasagiri", "Borra Caves", "Rushikonda Beach"],
+        "Vijayawada": ["Kanaka Durga Temple", "Undavalli Caves", "Prakasam Barrage", "Bhavani Island"],
+        "Tirupati": ["Sri Venkateswara Swamy Temple (Tirumala)", "Kapila Theertham", "Chandragiri Fort"],
+        "Kurnool": ["Belum Caves", "Konda Reddy Fort", "Oravakallu Rock Garden"]
+    },
+    "Arunachal Pradesh": {
+        "Itanagar": ["Ita Fort", "Ganga Lake", "Gompa Buddhist Temple", "Jawaharlal Nehru State Museum"],
+        "Tawang": ["Tawang Monastery", "Sela Pass", "Madhuri Lake", "Nuranang Falls"],
+        "Ziro": ["Talley Valley Wildlife Sanctuary", "Meghna Cave Temple", "Kardo Shiva Lingam"]
+    },
+    "Assam": {
+        "Guwahati": ["Kamakhya Temple", "Umananda Island", "Assam State Museum", "Deepor Beel", "Brahmaputra Riverfront"],
+        "Tezpur": ["Agnigarh", "Cole Park (Chitralekha Udyan)", "Bamuni Hills"],
+        "Jorhat": ["Majuli Island", "Hoollongapar Gibbon Sanctuary", "Gymkhana Club"]
+    },
+    "Bihar": {
+        "Patna": ["Golghar", "Patna Sahib Gurudwara", "Bihar Museum", "Kumhrar Ruins", "Sanjay Gandhi Biological Park"],
+        "Gaya & Bodh Gaya": ["Mahabodhi Temple", "Great Buddha Statue", "Vishnupad Temple", "Dungeshwari Cave"],
+        "Nalanda & Rajgir": ["Nalanda University Ruins", "Vishwa Shanti Stupa", "Venu Vana", "Griddhakuta Peak"]
+    },
+    "Chhattisgarh": {
+        "Raipur": ["Swami Vivekananda Sarovar", "Nandan Van Zoo", "Marine Drive Raipur", "Mahant Ghasidas Memorial Museum"],
+        "Bilaspur": ["Kanan Pendari Zoo", "Ratanpur Mahamaya Temple", "Khutaghat Dam"],
+        "Jagdalpur": ["Chitrakote Waterfalls", "Tirathgarh Falls", "Kanger Valley National Park", "Anthropological Museum"]
+    },
+    "Goa": {
+        "Panaji": ["Basilica of Bom Jesus", "Se Cathedral", "Miramar Beach", "Fort Aguada", "Church of Our Lady of the Immaculate Conception"],
+        "Margao": ["Colva Beach", "Benaulim Beach", "Holy Spirit Church", "Monte Hill"]
+    },
+    "Gujarat": {
+        "Ahmedabad": ["Sabarmati Ashram", "Adalaj Stepwell", "Sidi Saiyyed Mosque", "Kankaria Lake", "Science City"],
+        "Surat": ["Dumas Beach", "Surat Castle", "Dutch Garden", "Gopi Talav"],
+        "Vadodara": ["Laxmi Vilas Palace", "Sayaji Baug", "Baroda Museum", "Champaner-Pavagadh"],
+        "Rajkot": ["Watson Museum", "Kaba Gandhi No Delo", "Pradhyuman Zoological Park"]
+    },
+    "Haryana": {
+        "Gurugram": ["Kingdom of Dreams", "Cyber Hub", "Sultanpur National Park", "Vintage Camera Museum"],
+        "Faridabad": ["Badkhal Lake", "Surajkund Lake", "Raja Nahar Singh Palace"],
+        "Kurukshetra": ["Brahma Sarovar", "Jyotisar", "Panorama and Science Centre", "Sannihit Sarovar"],
+        "Panchkula": ["Pinjore Gardens", "Cactus Garden", "Morni Hills", "Nada Sahib Gurudwara"]
+    },
+    "Himachal Pradesh": {
+        "Shimla": ["The Ridge", "Mall Road", "Jakhoo Temple", "Kalka-Shimla Toy Train", "Christ Church"],
+        "Manali": ["Solang Valley", "Rohtang Pass", "Hadimba Temple", "Old Manali", "Jogini Falls"],
+        "Dharamshala & McLeod Ganj": ["Tsuglagkhang Complex", "Bhagsunag Waterfall", "Namgyal Monastery", "HPCA Stadium"]
+    },
+    "Jharkhand": {
+        "Ranchi": ["Hundru Falls", "Jonha Falls", "Dassam Falls", "Pahari Mandir", "Tagore Hill"],
+        "Jamshedpur": ["Jubilee Park", "Dimna Lake", "Dalma Wildlife Sanctuary", "Tata Steel Zoological Park"],
+        "Dhanbad": ["Maithon Dam", "Panchet Dam", "Topchanchi Lake", "Shakti Mandir"]
+    },
+    "Karnataka": {
+        "Bengaluru": ["Lalbagh Botanical Garden", "Cubbon Park", "Bangalore Palace", "Bannerghatta National Park", "Tipu Sultan's Summer Palace"],
+        "Mysuru": ["Mysore Palace", "Chamundi Hill", "Brindavan Gardens", "Mysore Zoo", "St. Philomena's Cathedral"],
+        "Hampi": ["Virupaksha Temple", "Vijaya Vittala Temple", "Lotus Mahal", "Elephant Stables", "Matanga Hill"],
+        "Mangaluru": ["Panambur Beach", "Kadri Manjunath Temple", "St. Aloysius Chapel", "Tannirbhavi Beach"]
+    },
+    "Kerala": {
+        "Thiruvananthapuram": ["Padmanabhaswamy Temple", "Kovalam Beach", "Napier Museum", "Shangumugham Beach"],
+        "Kochi": ["Fort Kochi", "Chinese Fishing Nets", "Mattancherry Palace", "Marine Drive", "Santa Cruz Basilica"],
+        "Munnar": ["Tea Museum", "Eravikulam National Park", "Mattupetty Dam", "Anamudi Peak", "Top Station"],
+        "Alappuzha": ["Alappuzha Beach", "Vembanad Lake", "Marari Beach", "Pathiramanal Island"]
+    },
+    "Madhya Pradesh": {
+        "Indore": ["Rajwada Palace", "Lal Bagh Palace", "Sarafa Bazaar", "Chappan Dukan", "Central Museum"],
+        "Bhopal": ["Upper Lake (Bhojtal)", "Van Vihar National Park", "Bharat Bhavan", "Taj-ul-Masajid", "Shaukat Mahal"],
+        "Ujjain": ["Mahakaleshwar Jyotirlinga", "Ram Ghat", "Kal Bhairav Temple", "Harsiddhi Temple", "Vedh Shala"],
+        "Gwalior": ["Gwalior Fort", "Jai Vilas Palace", "Sun Temple", "Tomb of Tansen", "Sas Bahu Temples"],
+        "Jabalpur": ["Bhedaghat (Marble Rocks)", "Dhuandhar Falls", "Chausath Yogini Temple", "Madan Mahal Fort"]
+    },
+    "Maharashtra": {
+        "Mumbai": ["Gateway of India", "Marine Drive", "Elephanta Caves", "Chhatrapati Shivaji Maharaj Terminus", "Siddhivinayak Temple"],
+        "Pune": ["Shaniwar Wada", "Aga Khan Palace", "Sinhagad Fort", "Dagdusheth Halwai Ganapati Temple", "Osho Garden"],
+        "Nagpur": ["Deekshabhoomi", "Futala Lake", "Ambazari Lake", "Sitabuldi Fort"],
+        "Nashik": ["Trimbakeshwar Shiva Temple", "Pandavleni Caves", "Panchavati", "Sula Vineyards"],
+        "Chhatrapati Sambhajinagar": ["Ajanta Caves", "Ellora Caves", "Bibi Ka Maqbara", "Daulatabad Fort"]
+    },
+    "Manipur": {
+        "Imphal": ["Loktak Lake", "Kangla Fort", "INA War Museum", "Keibul Lamjao National Park", "Ima Keithel (Mother's Market)"]
+    },
+    "Meghalaya": {
+        "Shillong": ["Umiam Lake", "Elephant Falls", "Shillong Peak", "Ward's Lake", "Don Bosco Museum"],
+        "Cherrapunji (Sohra)": ["Nohkalikai Falls", "Double Decker Living Root Bridge", "Mawsmai Cave", "Seven Sisters Falls"]
+    },
+    "Mizoram": {
+        "Aizawl": ["Solomon's Temple", "Durtlang Hills", "Mizoram State Museum", "Reiek Heritage Village", "KV Paradise"]
+    },
+    "Nagaland": {
+        "Kohima": ["Kohima War Cemetery", "Kisama Heritage Village", "Dzukou Valley", "Nagaland State Museum"],
+        "Dimapur": ["Kachari Ruins", "Triple Falls", "Diezephe Craft Village"]
+    },
+    "Odisha": {
+        "Bhubaneswar": ["Lingaraj Temple", "Udayagiri and Khandagiri Caves", "Nandankanan Zoological Park", "Mukteshwar Temple"],
+        "Puri": ["Jagannath Temple", "Puri Beach", "Chilika Lake (Satapada)", "Gundicha Temple"],
+        "Konark": ["Konark Sun Temple", "Chandrabhaga Beach", "Ramachandi Temple"]
+    },
+    "Punjab": {
+        "Amritsar": ["Golden Temple (Harmandir Sahib)", "Jallianwala Bagh", "Wagah Border", "Gobindgarh Fort"],
+        "Ludhiana": ["Lodhi Fort", "Nehru Rose Garden", "Punjab Agricultural University Museum"],
+        "Patiala": ["Qila Mubarak", "Sheesh Mahal", "Baradari Garden", "Gurdwara Dukh Niwaran Sahib"]
+    },
+    "Rajasthan": {
+        "Jaipur": ["Amber Fort", "Hawa Mahal", "City Palace", "Jantar Mantar", "Nahargarh Fort"],
+        "Udaipur": ["City Palace", "Lake Pichola", "Jag Mandir", "Saheliyon-ki-Bari", "Fateh Sagar Lake"],
+        "Jodhpur": ["Mehrangarh Fort", "Umaid Bhawan Palace", "Jaswant Thada", "Mandore Gardens"],
+        "Jaisalmer": ["Jaisalmer Fort (Sonar Qila)", "Sam Sand Dunes", "Patwon Ki Haveli", "Gadisar Lake"]
+    },
+    "Sikkim": {
+        "Gangtok": ["Tsomgo Lake", "Rumtek Monastery", "Nathula Pass", "Ban Jhakri Falls", "MG Marg"],
+        "Pelling": ["Pemayangtse Monastery", "Rabdentse Ruins", "Skywalk Pelling", "Kanchenjunga Falls"]
+    },
+    "Tamil Nadu": {
+        "Chennai": ["Marina Beach", "Kapaleeshwarar Temple", "Fort St. George", "San Thome Basilica", "Guindy National Park"],
+        "Madurai": ["Meenakshi Amman Temple", "Thirumalai Nayakkar Mahal", "Gandhi Memorial Museum", "Alagar Koyil"],
+        "Coimbatore": ["Adiyogi Shiva Statue", "Marudhamalai Murugan Temple", "VOC Park", "Siruvani Waterfalls"],
+        "Tiruchirappalli": ["Rockfort Temple", "Sri Ranganathaswamy Temple (Srirangam)", "Jambukeswarar Temple"]
+    },
+    "Telangana": {
+        "Hyderabad": ["Charminar", "Golconda Fort", "Ramoji Film City", "Salar Jung Museum", "Hussain Sagar Lake"],
+        "Warangal": ["Warangal Fort", "Thousand Pillar Temple", "Bhadrakali Temple", "Ramappa Temple"]
+    },
+    "Tripura": {
+        "Agartala": ["Ujjayanta Palace", "Neermahal Water Palace", "Tripura Sundari Temple", "Heritage Park"]
+    },
+    "Uttar Pradesh": {
+        "Agra": ["Taj Mahal", "Agra Fort", "Fatehpur Sikri", "Mehtab Bagh", "Akbar's Tomb (Sikandra)"],
+        "Varanasi": ["Kashi Vishwanath Temple", "Dashashwamedh Ghat", "Assi Ghat", "Sarnath", "Manikarnika Ghat"],
+        "Lucknow": ["Bara Imambara", "Chota Imambara", "Rumi Darwaza", "Ambedkar Memorial Park", "The Residency"],
+        "Mathura & Vrindavan": ["Krishna Janmasthan Temple", "Banke Bihari Temple", "Prem Mandir", "ISKCON Vrindavan"],
+        "Prayagraj": ["Triveni Sangam", "Allahabad Fort", "Anand Bhavan", "Khusro Bagh"]
+    },
+    "Uttarakhand": {
+        "Dehradun": ["Robber's Cave (Guchhupani)", "Sahastradhara", "Tapkeshwar Temple", "Forest Research Institute"],
+        "Rishikesh": ["Laxman Jhula", "Ram Jhula", "Triveni Ghat", "Parmarth Niketan", "Beatles Ashram"],
+        "Haridwar": ["Har Ki Pauri", "Mansa Devi Temple", "Chandi Devi Temple", "Maya Devi Temple"],
+        "Nainital": ["Naini Lake", "Naina Devi Temple", "Snow View Point", "Tiffin Top"]
+    },
+    "West Bengal": {
+        "Kolkata": ["Victoria Memorial", "Howrah Bridge", "Dakshineswar Kali Temple", "Indian Museum", "Park Street"],
+        "Darjeeling": ["Tiger Hill", "Batasia Loop", "Darjeeling Himalayan Railway (Toy Train)", "Peace Pagoda", "Rock Garden"],
+        "Siliguri": ["Bengal Safari", "Salugara Monastery", "Mahananda Wildlife Sanctuary"]
+    },
+
+    # -------------------------------------------------------------
+    # UNION TERRITORIES
+    # -------------------------------------------------------------
+    "Delhi (UT)": {
+        "Delhi": ["Red Fort", "Qutub Minar", "India Gate", "Lotus Temple", "Humayun's Tomb", "Akshardham Temple"]
+    },
+    "Chandigarh (UT)": {
+        "Chandigarh": ["Rock Garden", "Sukhna Lake", "Rose Garden", "Sector 17 Plaza"]
+    },
+    "Puducherry (UT)": {
+        "Puducherry": ["Promenade Beach", "Auroville", "Sri Aurobindo Ashram", "Paradise Beach", "French Quarter"]
+    },
+    "Jammu & Kashmir (UT)": {
+        "Srinagar": ["Dal Lake", "Shalimar Bagh", "Nishat Bagh", "Shankaracharya Temple", "Hazratbal Shrine"]
+    },
+    "Ladakh (UT)": {
+        "Leh": ["Pangong Tso", "Khardung La", "Leh Palace", "Shanti Stupa", "Thiksey Monastery"]
+    },
+    "Andaman & Nicobar Islands (UT)": {
+        "Port Blair": ["Cellular Jail", "Ross Island (Netaji Subhash Chandra Bose Island)", "Radhanagar Beach (Havelock)", "Corbyn's Cove Beach"]
+    }
+}
+
+```

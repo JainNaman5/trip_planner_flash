@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block title %}Explore - Trip Planner India{% endblock %}
+
+{% block content %}
+<div class="explore-layout">
+    <!-- Sidebar -->
+    <aside class="explore-sidebar">
+        <div class="sidebar-card">
+            <div>
+                <h3 class="sidebar-heading">ML Intelligence</h3>
+                <div class="ml-badge">
+                    <p>Personalized feed for <strong>{{ origin.name }}</strong> using {{ trip_type_label }} travel style.</p>
+                </div>
+            </div>
+            <div class="sidebar-info">
+                <h3 class="sidebar-heading">Selection</h3>
+                <p><strong>Place:</strong> {{ origin.name }}</p>
+                <p><strong>Duration:</strong> {{ days }} Days</p>
+                <p><strong>Budget:</strong> {{ budget_label }}</p>
+                <p><strong>Style:</strong> {{ trip_type_label }}</p>
+                <p><strong>Cluster:</strong> {{ cluster_theme }}</p>
+            </div>
+            <a href="/planner?{{ query|default('') }}" class="btn-primary" style="margin-bottom:0.5rem;text-align:center;">
+                <span class="material-symbols-outlined">map</span> View {{ days }}-Day Plan
+            </a>
+            <a href="/" class="btn-outline">← Change City</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="explore-main">
+        {% if origin_places|length > 0 %}
+        <!-- Origin City Attractions Section -->
+        <section class="origin-places-section">
+            <div class="origin-places-header">
+                <div class="origin-places-header-text">
+                    <div class="origin-tag-row">
+                        <span class="section-tag">Day 1 Sightseeing</span>
+                        <span class="origin-count-badge">{{ origin_places|length }} Iconic Sights</span>
+                    </div>
+                    <h2>Must-Visit Places in {{ origin.name }}</h2>
+                    <p>Experience the essential cultural, spiritual, and historical landmarks of {{ origin.name }} before continuing your route.</p>
+                </div>
+                <a href="/planner?{{ query|default('') }}" class="btn-origin-plan">
+                    <span>Plan Day 1 in {{ origin.name }}</span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </a>
+            </div>
+
+            <div class="origin-places-grid">
+                {% for place in origin_places %}
+                <article class="origin-place-card {% if place.is_top_pick %}origin-top-pick{% endif %}">
+                    <div class="origin-place-img-wrap">
+                        <img src="{{ place.image }}" alt="{{ place.name }}" loading="lazy"/>
+                        <div class="origin-place-img-overlay"></div>
+                        <div class="origin-place-top-badges">
+                            <span class="origin-place-type">
+                                <span class="material-symbols-outlined">{{ place.icon }}</span>
+                                {{ place.type }}
+                            </span>
+                            <span class="origin-place-rating">
+                                <span class="material-symbols-outlined">star</span>
+                                {{ place.google_rating }}
+                            </span>
+                        </div>
+                        {% if place.is_top_pick %}
+                        <div class="origin-crown-tag">
+                            <span class="material-symbols-outlined">local_fire_department</span> Top Highlight
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="origin-place-body">
+                        <h4 class="origin-place-title">{{ place.name }}</h4>
+                        <p class="origin-place-desc">{{ place.description }}</p>
+                        <div class="origin-place-meta">
+                            <div class="origin-meta-item">
+                                <span class="material-symbols-outlined">payments</span>
+                                <span>{% if place.entrance_fee > 0 %}₹{{ place.entrance_fee }} Entry{% else %}Free Entry{% endif %}</span>
+                            </div>
+                            <div class="origin-meta-item">
+                                <span class="material-symbols-outlined">calendar_month</span>
+                                <span>{{ place.best_time|default('Best: Oct - Mar') }}</span>
+                            </div>
+                        </div>
+                        <div class="origin-place-footer">
+                            <span class="origin-day-chip">
+                                <span class="material-symbols-outlined">check_circle</span> Included on Day 1
+                            </span>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <header class="explore-header" style="margin-top: 2rem;">
+            <span class="section-tag">Next Stops & Circuit</span>
+            <h1>Nearby Destinations from {{ origin.name }}</h1>
+            <p>ML-recommended destinations within reach of {{ origin.name }} for your {{ days }}-day trip.</p>
+        </header>
+
+        {% if nearby|length > 0 %}
+        <div class="results-grid">
+            <!-- Featured Card (first result) -->
+            {% set top = nearby[0] %}
+            <article class="result-featured">
+                <div class="result-featured-inner">
+                    <div class="result-featured-img">
+                        <img alt="{{ top.city }}" src="{{ top.image }}"/>
+                    </div>
+                    <div class="result-featured-body">
+                        <div class="result-top-row">
+                            <span class="match-badge">Top Recommendation • {{ top.match_score }}%</span>
+                            <span class="material-symbols-outlined">favorite</span>
+                        </div>
+                        <h2>{{ top.city }}</h2>
+                        <p class="result-state">{{ top.state }} — {{ top.distance_km }} km from {{ origin.name }}</p>
+                        <p class="result-desc">{{ top.description }}</p>
+                        <div class="result-attractions">
+                            {% for a in top.attractions[:3] %}
+                            <span class="attr-chip">{{ a.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="result-transport-row">
+                            {% for t in top.transport %}
+                            <div class="transport-mini">
+                                <span class="material-symbols-outlined">{{ t.icon }}</span>
+                                <span>{{ t.mode }} — {{ t.price_display }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <a href="/planner?location={{ origin.name }}&dest={{ top.city }}&budget={{ budget }}&trip_type={{ trip_type }}&days={{ days }}" class="btn-primary">Plan {{ days }}-Day Route →</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Other results -->
+            {% for place in nearby[1:] %}
+            <article class="result-card">
+                <div class="result-card-img">
+                    <img alt="{{ place.city }}" src="{{ place.image }}"/>
+                    <span class="score-badge">{{ place.match_score }}%</span>
+                </div>
+                <div class="result-card-body">
+                    <h3>{{ place.city }}</h3>
+                    <div class="result-meta">
+                        <span>{{ place.distance_km }} km away</span>
+                        <span>{{ place.state }}</span>
+                    </div>
+                    <p>{{ place.description }}</p>
+                    <div class="result-attractions">
+                        {% for a in place.attractions[:2] %}
+                        <span class="attr-chip small">{{ a.name }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="result-transport-row">
+                        {% for t in place.transport[:2] %}
+                        <div class="transport-mini">
+                            <span class="material-symbols-outlined">{{ t.icon }}</span>
+                            <span>{{ t.price_display }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a href="/planner?location={{ origin.name }}&dest={{ place.city }}&budget={{ budget }}&trip_type={{ trip_type }}&days={{ days }}" class="btn-small">Plan Route →</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <span class="material-symbols-outlined">search_off</span>
+            <h3>No results found</h3>
+            <p>Try a different city like Ujjain, Indore, Delhi, Mumbai, or Jaipur.</p>
+            <a href="/" class="btn-primary">Go Back</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

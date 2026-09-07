@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block title %}Trip Planner - {{ trip_name }}{% endblock %}
+
+{% block content %}
+<div class="planner-layout">
+    <!-- Sidebar Itinerary -->
+    <aside class="planner-sidebar">
+        <div class="planner-sidebar-inner">
+            <div class="planner-header">
+                <div class="planner-header-top">
+                    <span class="section-tag">Planned Route</span>
+                    <span class="trip-badge">{{ days }} Days Trip</span>
+                </div>
+                <h1>{{ trip_name }}</h1>
+                <div class="planner-stats-row">
+                    <span class="stat-pill"><span class="material-symbols-outlined">explore</span> Start: {{ origin }}</span>
+                    {% if total_distance > 0 %}
+                    <span class="stat-pill"><span class="material-symbols-outlined">route</span> ~{{ total_distance }} km</span>
+                    {% endif %}
+                </div>
+
+                <!-- Interactive Duration Selector -->
+                <div class="duration-selector-wrap">
+                    <label class="duration-label">Select Trip Duration:</label>
+                    <div class="duration-pills">
+                        {% for d in [1, 2, 3, 4, 5, 7] %}
+                        <a href="/planner?location={{ origin }}&dest={{ dest }}&budget={{ budget }}&trip_type={{ trip_type }}&days={{ d }}"
+                           class="duration-pill {% if days == d %}active{% endif %}">
+                            {{ d }} {% if d == 1 %}Day{% else %}Days{% endif %}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="itinerary-list">
+                {% for item in itinerary %}
+                <div class="itinerary-item">
+                    <div class="itinerary-line">
+                        <div class="itinerary-dot {% if item.is_origin %}origin-dot{% endif %}">
+                            <span>{{ item.day }}</span>
+                        </div>
+                    </div>
+                    <div class="itinerary-card">
+                        <div class="itinerary-top">
+                            <div class="day-badge-wrap">
+                                <span class="day-badge">Day {{ item.day }}</span>
+                                {% if item.is_origin %}
+                                <span class="origin-tag">Starting Hub</span>
+                                {% endif %}
+                            </div>
+                            <span class="itinerary-city">{{ item.city }}</span>
+                        </div>
+
+                        {% if not item.is_origin and item.transit %}
+                        <div class="itinerary-transit">
+                            <span class="material-symbols-outlined">transfer_within_a_station</span>
+                            <span>{{ item.transit }}</span>
+                        </div>
+                        {% endif %}
+
+                        <h3 class="itinerary-highlight">{{ item.highlight }}</h3>
+                        <p class="itinerary-tagline">{{ item.tagline }}</p>
+
+                        <!-- Places to Visit Section -->
+                        {% if item.places_to_visit and item.places_to_visit|length > 0 %}
+                        <div class="itinerary-places-box">
+                            <div class="itinerary-places-title">
+                                <span class="material-symbols-outlined">tour</span>
+                                <span>Places to visit in {{ item.city }}:</span>
+                            </div>
+                            <div class="places-chips-list">
+                                {% for place in item.places_to_visit %}
+                                <div class="place-chip-card" title="{{ place.description }}">
+                                    <span class="place-chip-name">{{ place.name }}</span>
+                                    {% if place.type %}
+                                    <span class="place-chip-type">{{ place.type }}</span>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if item.hotel %}
+                        <div class="itinerary-stay-row">
+                            <span class="material-symbols-outlined">hotel</span>
+                            <span>{{ item.hotel }}</span>
+                        </div>
+                        {% endif %}
+
+                        <div class="itinerary-actions">
+                            <a href="/stays?location={{ origin }}&dest={{ item.city }}&budget={{ budget }}&trip_type={{ trip_type }}&days={{ days }}" class="btn-small">
+                                View {{ item.city }} Stays →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="planner-footer-actions">
+                <a href="/explore?{{ query|default('') }}" class="btn-outline">← Back to Explore</a>
+                <a href="/" class="btn-outline">New Search</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Map Section -->
+    <section class="planner-map-section">
+        <div id="leafletMap" class="leaflet-map-container"></div>
+        <div class="map-controls">
+            <button onclick="map.zoomIn()" class="map-btn" title="Zoom In"><span class="material-symbols-outlined">add</span></button>
+            <button onclick="map.zoomOut()" class="map-btn" title="Zoom Out"><span class="material-symbols-outlined">remove</span></button>
+            <button onclick="map.setView([{{ center_lat }}, {{ center_lng }}], 7)" class="map-btn primary" title="Recenter"><span class="material-symbols-outlined">my_location</span></button>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize Leaflet map
+    const itinerary = {{ itinerary_json|safe }};
+    const centerLat = {{ center_lat }};
+    const centerLng = {{ center_lng }};
+
+    const map = L.map('leafletMap').setView([centerLat, centerLng], 6);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+    }).addTo(map);
+
+    // Add markers and polyline
+    const coords = [];
+    itinerary.forEach((item, idx) => {
+        const latlng = [item.coordinates[0], item.coordinates[1]];
+        coords.push(latlng);
+
+        const isOrigin = idx === 0;
+        const markerHtml = `
+            <div class="map-pin-badge ${isOrigin ? 'map-origin' : 'map-dest'}">
+                <span class="pin-number">Day ${item.day}</span>
+            </div>
+        `;
+
+        const icon = L.divIcon({
+            className: 'custom-map-pin',
+            html: markerHtml,
+            iconSize: [64, 32],
+            iconAnchor: [32, 32],
+            popupAnchor: [0, -32],
+        });
+
+        const placesHtml = item.places_to_visit ? item.places_to_visit.map(p => `• ${p.name}`).join('<br/>') : '';
+
+        const marker = L.marker(latlng, { icon: icon }).addTo(map);
+        marker.bindPopup(`
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;padding:6px;max-width:240px;">
+                <div style="font-size:12px;font-weight:700;color:#8f4e00;text-transform:uppercase;">Day ${item.day} • ${item.city}</div>
+                <div style="font-size:14px;font-weight:600;margin:3px 0 6px;">${item.highlight}</div>
+                ${placesHtml ? `<div style="font-size:11px;color:#555;line-height:1.4;margin-bottom:6px;">${placesHtml}</div>` : ''}
+                <div style="font-size:11px;color:#2e1500;font-weight:500;">${item.hotel || ''}</div>
+            </div>
+        `);
+    });
+
+    // Draw route line
+    if (coords.length > 1) {
+        L.polyline(coords, {
+            color: '#8f4e00',
+            weight: 4,
+            opacity: 0.85,
+            dashArray: '8 6',
+        }).addTo(map);
+    }
+
+    // Fit bounds
+    if (coords.length > 1) {
+        map.fitBounds(coords, { padding: [60, 60] });
+    }
+</script>
+{% endblock %}
+
