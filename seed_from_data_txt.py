@@ -27,7 +27,8 @@ INDIA_CITY_TOURIST_PLACES = {
     "Bihar": {
         "Patna": ["Golghar","Patna Sahib Gurudwara","Bihar Museum","Kumhrar Ruins","Sanjay Gandhi Biological Park"],
         "Gaya": ["Mahabodhi Temple","Great Buddha Statue","Vishnupad Temple","Dungeshwari Cave"],
-        "Nalanda": ["Nalanda University Ruins","Vishwa Shanti Stupa","Venu Vana","Griddhakuta Peak"],
+        "Nalanda": ["Nalanda University Ruins","Vishwa Shanti Stupa","Venu Vana","Griddhakuta Peak","Rajgir 5 Hills Jain Temples"],
+        "Pawapuri": ["Jal Mandir Pavapuri (Mahavira Swami Nirvana Sthal)","Samosharan Mandir","Gaon Mandir Pavapuri","Maniyar Math"],
     },
     "Chhattisgarh": {
         "Raipur": ["Swami Vivekananda Sarovar","Nandan Van Zoo","Marine Drive Raipur","Mahant Ghasidas Museum"],
@@ -39,10 +40,13 @@ INDIA_CITY_TOURIST_PLACES = {
         "Margao": ["Colva Beach","Benaulim Beach","Holy Spirit Church","Monte Hill"],
     },
     "Gujarat": {
-        "Ahmedabad": ["Sabarmati Ashram","Adalaj Stepwell","Sidi Saiyyed Mosque","Kankaria Lake","Science City"],
+        "Ahmedabad": ["Sabarmati Ashram","Hutheesing Jain Temple","Adalaj Stepwell","Sidi Saiyyed Mosque","Kankaria Lake","Science City"],
+        "Palitana": ["Shatrunjaya Tirth Hill (Adinath Bhagwan)","Shri Adishwar Jain Temple","Chaumukha Mandir","Hastagiri Jain Tirth","Gheeti Tirth"],
         "Surat": ["Dumas Beach","Surat Castle","Dutch Garden","Gopi Talav"],
-        "Vadodara": ["Laxmi Vilas Palace","Sayaji Baug","Baroda Museum","Champaner-Pavagadh"],
+        "Vadodara": ["Laxmi Vilas Palace","Sayaji Baug","Baroda Museum","Champaner-Pavagadh Jain Temples"],
         "Rajkot": ["Watson Museum","Kaba Gandhi No Delo","Pradhyuman Zoological Park"],
+        "Junagadh": ["Girnar Jain Tirth (Neminatha Nirvana Sthal)","Uparkot Fort","Mahabat Maqbara","Gir National Park Safari"],
+        "Shankheshwar": ["Shankheshwar Parshwanath Jain Tirth","Padmavati Mata Mandir","Jain Museum Shankheshwar"],
     },
     "Haryana": {
         "Gurugram": ["Kingdom of Dreams","Cyber Hub","Sultanpur National Park","Vintage Camera Museum"],
@@ -56,12 +60,15 @@ INDIA_CITY_TOURIST_PLACES = {
         "Dharamshala": ["Tsuglagkhang Complex","Bhagsunag Waterfall","Namgyal Monastery","HPCA Stadium"],
     },
     "Jharkhand": {
+        "Shikharji": ["Shri Sammed Shikharji (20 Tirthankara Nirvana Sthal)","Parasnath Hill Holy Tonks","Madhuban Jain Temples","Gandharva Nala Tirth","Digambar Jain Teerth Kshetra"],
         "Ranchi": ["Hundru Falls","Jonha Falls","Dassam Falls","Pahari Mandir","Tagore Hill"],
         "Jamshedpur": ["Jubilee Park","Dimna Lake","Dalma Wildlife Sanctuary","Tata Steel Zoological Park"],
         "Dhanbad": ["Maithon Dam","Panchet Dam","Topchanchi Lake","Shakti Mandir"],
     },
     "Karnataka": {
         "Bengaluru": ["Lalbagh Botanical Garden","Cubbon Park","Bangalore Palace","Bannerghatta National Park","Tipu Sultan Summer Palace"],
+        "Shravanabelagola": ["Gommateshwara Bahubali Statue (57 ft)","Vindhyagiri Hill Tirth","Chandragiri Hill Basadis","Odegal Basadi","Bhandari Basadi"],
+        "Moodbidri": ["Moodbidri Thousand Pillar Jain Temple (Savira Kambada Basadi)","Guru Basadi","Tribhangi Parshwanatha Temple","Karkala Gommateshwara Statue"],
         "Mysuru": ["Mysore Palace","Chamundi Hill","Brindavan Gardens","Mysore Zoo","St Philomenas Cathedral"],
         "Hampi": ["Virupaksha Temple","Vijaya Vittala Temple","Lotus Mahal","Elephant Stables","Matanga Hill"],
         "Mangaluru": ["Panambur Beach","Kadri Manjunath Temple","St Aloysius Chapel","Tannirbhavi Beach"],
@@ -73,24 +80,27 @@ INDIA_CITY_TOURIST_PLACES = {
         "Alappuzha": ["Alappuzha Beach","Vembanad Lake","Marari Beach","Pathiramanal Island"],
     },
     "Madhya Pradesh": {
-        "Ujjain": ["Mahakaleshwar Jyotirlinga","Ram Ghat","Kal Bhairav Temple","Harsiddhi Temple","Vedh Shala","Mangalnath Temple","Sandipani Ashram"],
-        "Indore": ["Rajwada Palace","Lal Bagh Palace","Sarafa Bazaar","Chappan Dukan","Central Museum Indore"],
+        "Ujjain": ["Mahakaleshwar Jyotirlinga","Mahavir Tapobhumi Jain Tirth","Digambar Jain Siddhakshetra (Jaisinghpura)","Shri Avanti Parshwanath Jain Shwetambar Tirth","Ram Ghat","Kal Bhairav Temple","Harsiddhi Temple","Vedh Shala","Mangalnath Temple"],
+        "Indore": ["Kanch Mandir (Glass Jain Temple)","Gomatgiri Jain Tirth (Bahubali Colossus)","Rajwada Palace","Lal Bagh Palace","Sarafa Bazaar","Chappan Dukan"],
+        "Sonagiri": ["Sonagiri Golden Peak Jain Tirth (108 White Temples)","Bhagwan Chandraprabhu Temple","Panch Balyati Tirth","Sheetalnath Bhagwan Temple"],
+        "Kundalpur": ["Kundalpur Bade Baba Digambar Jain Mandir","Kundalpur Giri Parvat","Vardhman Sagar Lake","Rukmini Kund Tirth"],
+        "Gwalior": ["Gwalior Fort","Gopachal Parvat Jain Rock Colossi","Siddhachal Jain Caves","Jai Vilas Palace","Sun Temple Gwalior"],
+        "Khajuraho": ["Parshvanatha Jain Temple","Shantinatha Jain Temple","Ghantai Jain Temple","Kandariya Mahadeva Temple","Lakshmana Temple"],
         "Omkareshwar": ["Omkareshwar Jyotirlinga","Mamleshwar Temple","Narmada Ghats","Siddhanath Temple"],
-        "Mandu": ["Jahaz Mahal","Hindola Mahal","Rani Roopmati Pavilion","Baz Bahadur Palace","Hoshang Shah Tomb"],
+        "Mandu": ["Jahaz Mahal","Suparshvanath Jain Mandir Mandu","Hindola Mahal","Rani Roopmati Pavilion","Baz Bahadur Palace"],
         "Maheshwar": ["Ahilya Fort","Maheshwar Ghats","Ahilyabai Holkar Temple","Narmada Riverfront"],
-        "Bhopal": ["Upper Lake Bhojtal","Van Vihar National Park","Bharat Bhavan","Taj-ul-Masajid","Shaukat Mahal"],
+        "Bhopal": ["Manua Bhan Ki Tekri Jain Tirth","Upper Lake Bhojtal","Van Vihar National Park","Bharat Bhavan","Taj-ul-Masajid"],
         "Pachmarhi": ["Bee Falls","Jata Shankar Cave","Dhoopgarh","Pandava Caves"],
-        "Khajuraho": ["Kandariya Mahadeva Temple","Lakshmana Temple","Western Group of Temples","Duladeo Temple"],
         "Orchha": ["Orchha Fort Complex","Ram Raja Temple","Chaturbhuj Temple","Jahangir Mahal"],
-        "Gwalior": ["Gwalior Fort","Jai Vilas Palace","Sun Temple Gwalior","Tomb of Tansen","Sas Bahu Temples"],
-        "Jabalpur": ["Bhedaghat Marble Rocks","Dhuandhar Falls","Chausath Yogini Temple","Madan Mahal Fort"],
+        "Jabalpur": ["Bhedaghat Marble Rocks","Dhuandhar Falls","Pisanhari Ki Madiya Jain Tirth","Chausath Yogini Temple"],
     },
     "Maharashtra": {
-        "Mumbai": ["Gateway of India","Marine Drive","Elephanta Caves","Chhatrapati Shivaji Terminus","Siddhivinayak Temple"],
-        "Pune": ["Shaniwar Wada","Aga Khan Palace","Sinhagad Fort","Dagdusheth Ganapati Temple","Osho Garden"],
+        "Mumbai": ["Gateway of India","Babu Amichand Panalal Jain Temple (Walkeshwar)","Godiji Parshwanath Jain Mandir","Marine Drive","Elephanta Caves","Siddhivinayak Temple"],
+        "Pune": ["Katraj Jain Temple (Aagam Mandir)","Shaniwar Wada","Aga Khan Palace","Sinhagad Fort","Dagdusheth Ganapati Temple"],
+        "Mangi Tungi": ["Mangi Tungi Siddhakshetra (108 ft Rishabhdeva Statue)","Ram-Sita Guha","Krishna Balaram Samadhi Tirth"],
         "Nagpur": ["Deekshabhoomi","Futala Lake","Ambazari Lake","Sitabuldi Fort"],
-        "Nashik": ["Trimbakeshwar Shiva Temple","Pandavleni Caves","Panchavati","Sula Vineyards"],
-        "Aurangabad": ["Ajanta Caves","Ellora Caves","Bibi Ka Maqbara","Daulatabad Fort"],
+        "Nashik": ["Gajpantha Jain Siddhakshetra (Mhasrul)","Trimbakeshwar Shiva Temple","Pandavleni Caves","Panchavati"],
+        "Aurangabad": ["Ellora Caves Jain Cave Group (Indra Sabha)","Ajanta Caves","Bibi Ka Maqbara","Daulatabad Fort"],
     },
     "Manipur": {
         "Imphal": ["Loktak Lake","Kangla Fort","INA War Museum","Keibul Lamjao National Park","Ima Keithel Mothers Market"],
@@ -107,7 +117,7 @@ INDIA_CITY_TOURIST_PLACES = {
         "Dimapur": ["Kachari Ruins","Triple Falls","Diezephe Craft Village"],
     },
     "Odisha": {
-        "Bhubaneswar": ["Lingaraj Temple","Udayagiri Khandagiri Caves","Nandankanan Zoological Park","Mukteshwar Temple"],
+        "Bhubaneswar": ["Lingaraj Temple","Udayagiri Khandagiri Jain Caves","Nandankanan Zoological Park","Mukteshwar Temple"],
         "Puri": ["Jagannath Temple","Puri Beach","Chilika Lake","Gundicha Temple"],
         "Konark": ["Konark Sun Temple","Chandrabhaga Beach","Ramachandi Temple"],
     },
@@ -117,10 +127,12 @@ INDIA_CITY_TOURIST_PLACES = {
         "Patiala": ["Qila Mubarak","Sheesh Mahal","Baradari Garden","Gurdwara Dukh Niwaran Sahib"],
     },
     "Rajasthan": {
-        "Jaipur": ["Amber Fort","Hawa Mahal","City Palace Jaipur","Jantar Mantar","Nahargarh Fort"],
-        "Udaipur": ["City Palace Udaipur","Lake Pichola","Jag Mandir","Saheliyon-ki-Bari","Fateh Sagar Lake"],
-        "Jodhpur": ["Mehrangarh Fort","Umaid Bhawan Palace","Jaswant Thada","Mandore Gardens"],
-        "Jaisalmer": ["Jaisalmer Fort Sonar Qila","Sam Sand Dunes","Patwon Ki Haveli","Gadisar Lake"],
+        "Mount Abu": ["Dilwara Jain Temples (Vimal & Luna Vasahi)","Achalgarh Jain Temple","Nakki Lake","Guru Shikhar Peak","Sunset Point"],
+        "Ranakpur": ["Ranakpur Jain Temple (1444 Carved Pillars)","Chaumukha Mandir Ranakpur","Surya Narayan Temple","Suparshvanatha Mandir"],
+        "Jaipur": ["Shri Padampura Digambar Jain Tirth","Sanganer Digambar Jain Mandir","Amber Fort","Hawa Mahal","City Palace Jaipur","Nahargarh Fort"],
+        "Udaipur": ["Kesariyaji Rishabhdeo Jain Tirth","City Palace Udaipur","Lake Pichola","Jag Mandir","Saheliyon-ki-Bari"],
+        "Jodhpur": ["Osian Jain Temples","Mehrangarh Fort","Umaid Bhawan Palace","Jaswant Thada","Mandore Gardens"],
+        "Jaisalmer": ["Jaisalmer Fort Jain Temples (Chandraprabhu)","Lodurva Parshwanath Jain Tirth","Sam Sand Dunes","Patwon Ki Haveli"],
     },
     "Sikkim": {
         "Gangtok": ["Tsomgo Lake","Rumtek Monastery","Nathula Pass","Ban Jhakri Falls","MG Marg"],
@@ -133,18 +145,20 @@ INDIA_CITY_TOURIST_PLACES = {
         "Tiruchirappalli": ["Rockfort Temple","Sri Ranganathaswamy Temple Srirangam","Jambukeswarar Temple"],
     },
     "Telangana": {
-        "Hyderabad": ["Charminar","Golconda Fort","Ramoji Film City","Salar Jung Museum","Hussain Sagar Lake"],
+        "Hyderabad": ["Charminar","Golconda Fort","Kulpakji Jain Tirth (Kolanupaka)","Ramoji Film City","Salar Jung Museum"],
         "Warangal": ["Warangal Fort","Thousand Pillar Temple","Bhadrakali Temple","Ramappa Temple"],
     },
     "Tripura": {
         "Agartala": ["Ujjayanta Palace","Neermahal Water Palace","Tripura Sundari Temple","Heritage Park Agartala"],
     },
     "Uttar Pradesh": {
+        "Ayodhya": ["Shri Ram Mandir","Ayodhya Jain Tirth (Birthplace of 5 Tirthankaras)","Badi Murti Digambar Jain Mandir","Hanuman Garhi","Kanak Bhawan","Saryu Ghat"],
+        "Hastinapur": ["Jambudweep Jain Tirth","Shantinath Digambar Jain Temple","Kailash Parvat Jain Rachna","Ashtapad Jain Tirth"],
         "Agra": ["Taj Mahal","Agra Fort","Fatehpur Sikri","Mehtab Bagh","Akbar Tomb Sikandra"],
-        "Varanasi": ["Kashi Vishwanath Temple","Dashashwamedh Ghat","Assi Ghat","Sarnath","Manikarnika Ghat"],
+        "Varanasi": ["Bhelupur Jain Tirth (Parshvanatha Janmabhumi)","Chandrawati Jain Tirth","Kashi Vishwanath Temple","Dashashwamedh Ghat","Sarnath"],
         "Lucknow": ["Bara Imambara","Chota Imambara","Rumi Darwaza","Ambedkar Memorial Park","The Residency"],
-        "Mathura": ["Krishna Janmasthan Temple","Banke Bihari Temple","Prem Mandir","ISKCON Vrindavan"],
-        "Prayagraj": ["Triveni Sangam","Allahabad Fort","Anand Bhavan","Khusro Bagh"],
+        "Mathura": ["Chaurasi Digambar Jain Mandir Mathura","Krishna Janmasthan Temple","Banke Bihari Temple","Prem Mandir"],
+        "Prayagraj": ["Prabhasgiri Jain Tirth (Padmaprabhu)","Triveni Sangam","Allahabad Fort","Anand Bhavan"],
     },
     "Uttarakhand": {
         "Dehradun": ["Robbers Cave Guchhupani","Sahastradhara","Tapkeshwar Temple","Forest Research Institute"],
@@ -153,12 +167,12 @@ INDIA_CITY_TOURIST_PLACES = {
         "Nainital": ["Naini Lake","Naina Devi Temple","Snow View Point","Tiffin Top"],
     },
     "West Bengal": {
-        "Kolkata": ["Victoria Memorial","Howrah Bridge","Dakshineswar Kali Temple","Indian Museum","Park Street"],
+        "Kolkata": ["Pareshnath Jain Temple (Calcutta Jain Temple)","Victoria Memorial","Howrah Bridge","Dakshineswar Kali Temple","Indian Museum"],
         "Darjeeling": ["Tiger Hill","Batasia Loop","Darjeeling Himalayan Railway Toy Train","Peace Pagoda","Rock Garden"],
         "Siliguri": ["Bengal Safari","Salugara Monastery","Mahananda Wildlife Sanctuary"],
     },
     "Delhi": {
-        "Delhi": ["Red Fort","Qutub Minar","India Gate","Lotus Temple","Humayuns Tomb","Akshardham Temple"],
+        "Delhi": ["Shri Digambar Jain Lal Mandir (Chandni Chowk)","Ahinsa Sthal (Mehrauli Mahavira Statue)","Red Fort","Qutub Minar","India Gate","Lotus Temple","Akshardham Temple"],
     },
     "Chandigarh": {
         "Chandigarh": ["Rock Garden Chandigarh","Sukhna Lake","Rose Garden","Sector 17 Plaza"],
@@ -213,6 +227,21 @@ CITY_COORDS = {
     "Warangal":(17.9689,79.5941),"Agartala":(23.8315,91.2868),"Prayagraj":(25.4358,81.8463),
     "Siliguri":(26.7271,88.3953),"Thiruvananthapuram":(8.5241,76.9366),"Port Blair":(11.6234,92.7265),
     "Puducherry":(11.9416,79.8083),
+    # Top Jain Tirth Kshetra coordinates
+    "Palitana": (21.5222, 71.8290),
+    "Shikharji": (23.9628, 86.1364),
+    "Mount Abu": (24.5926, 72.7156),
+    "Ranakpur": (25.1166, 73.4735),
+    "Shravanabelagola": (12.8574, 76.4862),
+    "Sonagiri": (25.7000, 78.3300),
+    "Kundalpur": (24.0300, 79.5800),
+    "Pawapuri": (25.0933, 85.5264),
+    "Hastinapur": (29.1700, 78.0200),
+    "Ayodhya": (26.7922, 82.1998),
+    "Moodbidri": (13.0700, 74.9900),
+    "Mangi Tungi": (20.8400, 74.0700),
+    "Junagadh": (21.5222, 70.4579),
+    "Shankheshwar": (23.5000, 71.7800),
 }
 
 STATE_COORDS = {
@@ -232,7 +261,8 @@ STATE_COORDS = {
 }
 
 RELIGIOUS_KW=["temple","mandir","masjid","mosque","church","gurudwara","shrine","ghat","monastery",
-              "stupa","ashram","jyotirlinga","basilica","cathedral","pagoda","sahib","gurdwara"]
+              "stupa","ashram","jyotirlinga","basilica","cathedral","pagoda","sahib","gurdwara",
+              "jain","tirth","derasar","basadi","shikharji","shatrunjaya","bahubali","tirthankara","tapobhumi","siddhakshetra"]
 HISTORICAL_KW=["fort","palace","mahal","ruins","museum","tomb","gate","memorial","jail","minar",
                "qila","haveli","arch","terminus"]
 NATURE_KW=["lake","falls","waterfall","valley","beach","garden","park","forest","wildlife",

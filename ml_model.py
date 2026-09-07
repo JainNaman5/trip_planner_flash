@@ -45,7 +45,7 @@ class TripRecommender:
         self.city_coords = None
 
     def fit(self):
-        """Train ML models on city data from the database."""
+        """Train ML models on city data from the database using Haversine spherical distance."""
         conn = get_db()
         rows = conn.execute("SELECT id, name, state, lat, lng FROM cities").fetchall()
         conn.close()
@@ -54,13 +54,14 @@ class TripRecommender:
         coords = np.array([[c["lat"], c["lng"]] for c in self.cities])
         self.city_coords = coords
 
-        # Standardise coordinates for KNN
+        # Standardise coordinates for KMeans clustering
         scaled = self.scaler.fit_transform(coords)
 
-        # KNN model — find nearest cities by geography
-        k = min(len(self.cities), 25)
-        self.knn_model = NearestNeighbors(n_neighbors=k, metric="euclidean")
-        self.knn_model.fit(scaled)
+        # KNN model on true spherical Haversine metric in radians
+        rad_coords = np.radians(coords)
+        k = min(len(self.cities), len(self.cities))
+        self.knn_model = NearestNeighbors(n_neighbors=k, metric="haversine")
+        self.knn_model.fit(rad_coords)
 
         # K-Means clustering — group cities into regional clusters
         n_clusters = min(5, len(self.cities))
@@ -72,7 +73,7 @@ class TripRecommender:
         for i, city in enumerate(self.cities):
             city["cluster"] = int(labels[i])
 
-        print(f"[ML] Trained KNN (k={k}) and KMeans ({n_clusters} clusters) on {len(self.cities)} cities")
+        print(f"[ML] Trained KNN (Haversine) and KMeans ({n_clusters} clusters) on {len(self.cities)} cities")
 
     def _find_city(self, name):
         """Lookup city by name (case-insensitive)."""
@@ -87,26 +88,25 @@ class TripRecommender:
         return None
 
     def get_nearby_cities(self, lat, lng, k=10):
-        """Use KNN to find the k nearest cities within 500km of a coordinate."""
-        n = min(k + 15, len(self.cities))  # Fetch extra to filter by real distance
-        point = self.scaler.transform([[lat, lng]])
-        distances, indices = self.knn_model.kneighbors(point, n_neighbors=n)
+        """Use KNN Haversine metric to find the closest cities to a coordinate in exact distance order."""
+        point_rad = np.radians([[lat, lng]])
+        distances, indices = self.knn_model.kneighbors(point_rad, n_neighbors=len(self.cities))
         results = []
-        for dist_val, idx in zip(distances[0], indices[0]):
+        for dist_rad, idx in zip(distances[0], indices[0]):
             city = self.cities[idx]
-            real_dist = haversine(lat, lng, city["lat"], city["lng"])
-            if 10 < real_dist <= 500:  # Skip origin and too-far cities
-                results.append({**city, "distance_km": round(real_dist)})
+            dist_km = round(dist_rad * 6371.0)
+            if 15 <= dist_km <= 500:  # Exclude self/origin, include within 500km travel corridor
+                results.append({**city, "distance_km": dist_km})
         results.sort(key=lambda x: x["distance_km"])
         return results[:k]
 
     def get_recommendations(self, city_name, budget="medium", trip_type="balanced"):
-        """Full recommendation pipeline for a given city."""
+        """Full recommendation pipeline prioritizing true geographic proximity and local relevance."""
         origin = self._find_city(city_name)
         if not origin:
             return None
 
-        # 1. KNN — nearby cities
+        # 1. KNN Haversine — find the true closest cities in increasing distance order
         nearby = self.get_nearby_cities(origin["lat"], origin["lng"], k=10)
 
         # 2. Get attractions for nearby cities
@@ -123,44 +123,43 @@ class TripRecommender:
         ).fetchall()
         attractions = [dict(a) for a in attractions]
 
-        # 3. Build scored nearby list
+        # 3. Build scored nearby list with proximity as the dominant driver
         scored = []
         for city in nearby:
             city_attractions = [a for a in attractions if a["city_id"] == city["id"]]
-            avg_pop = (sum(a["popularity"] for a in city_attractions) / len(city_attractions)) if city_attractions else 0
+            avg_pop = (sum(a["popularity"] for a in city_attractions) / len(city_attractions)) if city_attractions else 5.0
             avg_rating = (sum(a.get("google_rating", 4.0) for a in city_attractions) / len(city_attractions)) if city_attractions else 4.0
             num_attractions = len(city_attractions)
 
-            # ML Score: weighted combo of distance, popularity, rating, and variety
-            dist_score = max(0, 100 - city["distance_km"] * 0.12)
-            pop_score = min(avg_pop * 8, 50)
-            rating_score = (avg_rating - 3.0) * 15  # 0-30 range
-            variety_score = min(num_attractions * 5, 20)
+            # Proximity is the primary ranking factor:
+            # 50 km -> ~92%, 100 km -> ~84%, 150 km -> ~77%, 200 km -> ~70%, 300 km -> ~55%
+            dist_score = max(25.0, 100.0 - (city["distance_km"] * 0.15))
 
-            # Trip-type weighting adjustments
+            # Quality and theme fine-tuning (+/- 2 to 8%)
+            pop_boost = min(avg_pop * 0.5, 4.0)
+            rating_boost = max(0.0, (avg_rating - 3.5) * 4.0)
+
             sig_types = [a.get("significance", "") for a in city_attractions]
+            theme_boost = 0.0
             if trip_type == "nearby":
-                # Adventure: prefer closer, nature/adventure spots
-                adventure_bonus = sum(5 for s in sig_types if s in ("Adventure","Nature","Wildlife","Recreational")) 
-                match_score = int(dist_score * 0.6 + pop_score * 0.15 + rating_score * 0.1 + variety_score * 0.05 + adventure_bonus)
+                theme_boost = sum(1.5 for s in sig_types if s in ("Adventure", "Nature", "Wildlife", "Scenic"))
             elif trip_type == "popular":
-                # Heritage: prefer historical, high-rated, popular
-                heritage_bonus = sum(5 for s in sig_types if s in ("Historical","Architectural","Cultural","Archaeological"))
-                match_score = int(dist_score * 0.2 + pop_score * 0.4 + rating_score * 0.2 + variety_score * 0.1 + heritage_bonus)
+                theme_boost = sum(1.5 for s in sig_types if s in ("Historical", "Architectural", "Cultural"))
             else:
-                # Spiritual/balanced: prefer religious, spiritual spots
-                spiritual_bonus = sum(5 for s in sig_types if s in ("Religious","Spiritual"))
-                match_score = int(dist_score * 0.35 + pop_score * 0.25 + rating_score * 0.2 + variety_score * 0.1 + spiritual_bonus)
+                theme_boost = sum(1.5 for s in sig_types if s in ("Religious", "Spiritual"))
+            theme_boost = min(theme_boost, 6.0)
 
-            # Budget relevance: penalize expensive attractions for budget travelers
+            # Budget fine-tuning
+            budget_adj = 0.0
             if budget == "low":
-                avg_fee = (sum(a.get("entrance_fee", 0) for a in city_attractions) / max(len(city_attractions), 1))
+                avg_fee = sum(a.get("entrance_fee", 0) for a in city_attractions) / max(len(city_attractions), 1)
                 if avg_fee > 200:
-                    match_score -= 10
+                    budget_adj = -3.0
             elif budget == "high":
-                match_score += 5  # Luxury travelers get a small boost for popular spots
+                budget_adj = 2.0
 
-            match_score = max(15, min(match_score, 98))
+            match_score = int(round(dist_score + pop_boost + rating_boost + theme_boost + budget_adj))
+            match_score = max(30, min(match_score, 98))
 
             # Transport options
             transport = conn.execute(
@@ -168,7 +167,7 @@ class TripRecommender:
                 (origin["id"], city["id"])
             ).fetchall()
 
-            # Get all stay options (budget, mid-range, luxury) for the city
+            # Get stay options
             stays = conn.execute(
                 "SELECT name, type, price_per_night, rating FROM stays WHERE city_id=? ORDER BY price_per_night",
                 (city["id"],)
@@ -206,8 +205,9 @@ class TripRecommender:
 
         conn.close()
 
-        # Sort by match score descending
-        scored.sort(key=lambda x: x["match_score"], reverse=True)
+        # Sort primarily by proximity (distance_km ascending) with secondary match_score ranking
+        # This guarantees closest destinations like Indore (51km), Mandu (101km), Omkareshwar (110km) are shown first!
+        scored.sort(key=lambda x: (x["distance_km"], -x["match_score"]))
 
         cluster_id = origin.get("cluster", 0)
         return {

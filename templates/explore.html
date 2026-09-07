@@ -51,7 +51,7 @@
                 {% for place in origin_places %}
                 <article class="origin-place-card {% if place.is_top_pick %}origin-top-pick{% endif %}">
                     <div class="origin-place-img-wrap">
-                        <img src="{{ place.image }}" alt="{{ place.name }}" loading="lazy"/>
+                        <img src="{{ place.image }}" alt="{{ place.name }}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80';"/>
                         <div class="origin-place-img-overlay"></div>
                         <div class="origin-place-top-badges">
                             <span class="origin-place-type">
@@ -107,7 +107,7 @@
             <article class="result-featured">
                 <div class="result-featured-inner">
                     <div class="result-featured-img">
-                        <img alt="{{ top.city }}" src="{{ top.image }}"/>
+                        <img alt="{{ top.city }}" src="{{ top.image }}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80';"/>
                     </div>
                     <div class="result-featured-body">
                         <div class="result-top-row">
@@ -139,7 +139,7 @@
             {% for place in nearby[1:] %}
             <article class="result-card">
                 <div class="result-card-img">
-                    <img alt="{{ place.city }}" src="{{ place.image }}"/>
+                    <img alt="{{ place.city }}" src="{{ place.image }}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80';"/>
                     <span class="score-badge">{{ place.match_score }}%</span>
                 </div>
                 <div class="result-card-body">

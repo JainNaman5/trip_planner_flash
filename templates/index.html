@@ -5,7 +5,7 @@
 <!-- Hero Section -->
 <section class="hero" id="heroSection">
     <div class="hero-bg">
-        <img alt="India travel" src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1600&q=80"/>
+        <img alt="Ram Mandir Ayodhya" src="{{ url_for('static', filename='images/ram_mandir_ayodhya.jpg') }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1600&q=80';"/>
         <div class="hero-overlay"></div>
     </div>
     <div class="hero-inner">
@@ -40,30 +40,42 @@
                 <div class="form-row form-row-3">
                     <div class="form-group">
                         <label>Duration</label>
-                        <select name="days" id="daysSelect">
-                            <option value="1">1 Day</option>
-                            <option value="2">2 Days</option>
-                            <option value="3" selected>3 Days</option>
-                            <option value="4">4 Days</option>
-                            <option value="5">5 Days</option>
-                            <option value="7">7 Days</option>
-                        </select>
+                        <div class="select-row">
+                            <span class="material-symbols-outlined select-icon">calendar_today</span>
+                            <select name="days" id="daysSelect" aria-label="Trip duration">
+                                <option value="1">1 Day</option>
+                                <option value="2">2 Days</option>
+                                <option value="3" selected>3 Days</option>
+                                <option value="4">4 Days</option>
+                                <option value="5">5 Days</option>
+                                <option value="7">7 Days</option>
+                            </select>
+                            <span class="material-symbols-outlined dropdown-arrow">expand_more</span>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Budget</label>
-                        <select name="budget" id="budgetSelect">
-                            <option value="low">Budget</option>
-                            <option value="medium" selected>Standard</option>
-                            <option value="high">Luxury</option>
-                        </select>
+                        <div class="select-row">
+                            <span class="material-symbols-outlined select-icon">payments</span>
+                            <select name="budget" id="budgetSelect" aria-label="Trip budget">
+                                <option value="low">Budget</option>
+                                <option value="medium" selected>Standard</option>
+                                <option value="high">Luxury</option>
+                            </select>
+                            <span class="material-symbols-outlined dropdown-arrow">expand_more</span>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Travel Style</label>
-                        <select name="trip_type" id="tripTypeSelect">
-                            <option value="popular">Heritage</option>
-                            <option value="balanced" selected>Spiritual</option>
-                            <option value="nearby">Adventure</option>
-                        </select>
+                        <div class="select-row">
+                            <span class="material-symbols-outlined select-icon">travel_explore</span>
+                            <select name="trip_type" id="tripTypeSelect" aria-label="Travel style">
+                                <option value="popular">Heritage</option>
+                                <option value="balanced" selected>Spiritual</option>
+                                <option value="nearby">Adventure</option>
+                            </select>
+                            <span class="material-symbols-outlined dropdown-arrow">expand_more</span>
+                        </div>
                     </div>
                 </div>
                 <button type="submit" class="btn-primary" id="planBtn">
@@ -87,7 +99,7 @@
     </div>
     <div class="featured-grid">
         <div class="featured-card featured-large" onclick="window.location='/explore'">
-            <img alt="Explore nearby" src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80"/>
+            <img alt="Explore nearby" src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80';"/>
             <div class="featured-card-overlay"></div>
             <div class="featured-card-text">
                 <span class="card-tag">Step 1</span>
@@ -96,7 +108,7 @@
             </div>
         </div>
         <div class="featured-card" onclick="window.location='/planner'">
-            <img alt="Planner" src="https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=80"/>
+            <img alt="Planner" src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80';"/>
             <div class="featured-card-overlay"></div>
             <div class="featured-card-text">
                 <span class="card-tag">Step 2</span>
@@ -105,7 +117,7 @@
             </div>
         </div>
         <div class="featured-card" onclick="window.location='/stays'">
-            <img alt="Stays" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"/>
+            <img alt="Stays" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80';"/>
             <div class="featured-card-overlay"></div>
             <div class="featured-card-text">
                 <span class="card-tag">Step 3</span>

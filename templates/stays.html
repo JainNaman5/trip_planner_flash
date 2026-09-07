@@ -11,7 +11,7 @@
         <a href="/planner?{{ query|default('') }}" class="btn-outline" style="margin-top:1rem;">← Back to Planner</a>
     </div>
     <div class="stays-hero-img">
-        <img src="{{ dest_image }}" alt="{{ dest_city }}"/>
+        <img src="{{ dest_image }}" alt="{{ dest_city }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80';"/>
         <div class="stays-hero-img-overlay"></div>
     </div>
 </section>
@@ -66,7 +66,7 @@
             'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80'
         ],
         'luxury': [
-            'https://images.unsplash.com/photo-1618773928121-c32f5e585492?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
             'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
             'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80'
         ]
@@ -77,7 +77,7 @@
         {% set img_idx = loop.index0 % 3 %}
         <div class="stay-card">
             <div class="stay-card-img">
-                <img src="{{ type_imgs[img_idx] }}" alt="{{ hotel.name }}"/>
+                <img src="{{ type_imgs[img_idx] }}" alt="{{ hotel.name }}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';"/>
                 <div class="stay-type-badge">{{ hotel.type|replace('_', ' ')|title }}</div>
             </div>
             <div class="stay-card-body">
